@@ -10,5 +10,5 @@ class MatlabWorker:
     def run(self, *args):
         pass
 
-    def start(self):
-        self.value = self.run()
+    def start(self, *args):
+        self.value = self.run(*args)
