@@ -37,6 +37,19 @@ class MyTestCase(unittest.TestCase):
         else:
             self.fail("Not Found Shared MATLAB Session")
 
+    def test_matlab_pool(self):
+        matlab_pool = field.MatlabPool(engine_count=2)
+        for session_name in matlab_pool.session_names:
+            self.assertTrue(isinstance(session_name, str))
+
+        class FieldIIInitWorker(field.MatlabWorker):
+            def run(self, *args):
+                self.e.field_init()
+                return self.e.session_name
+
+        result = matlab_pool.parallel(FieldIIInitWorker, list(range(10)))
+        self.assertEqual(result, matlab_pool.session_names)
+
 
 if __name__ == '__main__':
     unittest.main()
