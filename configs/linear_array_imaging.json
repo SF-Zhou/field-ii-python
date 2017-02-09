@@ -8,5 +8,19 @@
   "focus": [0.0, 0.0, 5e-2],
   "active_count": 64,
   "z_focus": 5e-2,
-  "line_count": 129
+  "line_count": 129,
+  "pixel_width": 5.133333333333333e-4,
+  "z_start": 30e-3,
+  "z_size": 50e-3,
+  "dynamic_range": 50,
+  "point_count": 1000,
+  "light_points": [
+    [-30e-3, 0e-3, 50e-3],
+    [-20e-3, 0e-3, 50e-3],
+    [-10e-3, 0e-3, 50e-3],
+    [  0e-3, 0e-3, 50e-3],
+    [ 10e-3, 0e-3, 50e-3],
+    [ 20e-3, 0e-3, 50e-3],
+    [ 30e-3, 0e-3, 50e-3]
+  ]
 }

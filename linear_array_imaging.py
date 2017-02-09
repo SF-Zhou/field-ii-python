@@ -10,7 +10,7 @@ pool = field.MatlabPool(engine_count=4)
 task = list(range(1, para.line_count + 1))
 
 image_data = pool.parallel(simulate.LinearArrayImagingWorker, task=task, args=(para,))
-print(para.element_width * para.element_count)
 viewer.viewer(image_data,
-              width=para.element_width * para.line_count * 1000,
-              height=80, dynamic_range=40)
+              width=para.image_width * 1000,
+              height=(para.z_start + para.z_size) * 1000,
+              dynamic_range=para.dynamic_range)

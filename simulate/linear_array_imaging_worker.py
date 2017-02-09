@@ -29,25 +29,7 @@ class LinearArrayImagingWorker(field.MatlabWorker):
                                                    para.element_height,
                                                    para.kerf, 1, 5, para.focus)
         self.e.xdc_impulse(receive_aperture, impulse_response)
-        phantom_positions = np.array([
-            [0, 0, 80],
-            [0, 0, 70],
-            [0, 0, 60],
-            [0, 0, 50],
-            [0, 0, 40],
-            [0, 0, 30],
-            [0, 0, 20],
-            [0, 0, 10],
-
-            [-30, 0, 50],
-            [-20, 0, 50],
-            [-10, 0, 50],
-            [+00, 0, 50],
-            [+10, 0, 50],
-            [+20, 0, 50],
-            [+30, 0, 50],
-        ]) / 1000
-        phantom_amplitudes = np.ones(phantom_positions.shape[0])
+        phantom_positions, phantom_amplitudes = para.phantom
 
         result = []
         for i in self.task:
