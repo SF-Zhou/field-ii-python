@@ -88,5 +88,10 @@ class MatlabEngine:
                                     self.e.transpose(matlab.double(np.array(amplitudes).tolist())),
                                     dec_factor, nargout=2)
 
+    def scat(self, th1, th2, points: np.ndarray, amplitudes: np.ndarray, sampling_frequency: float):
+        rf_data, start = self.calc_scat(th1, th2, points, amplitudes)
+        _, m = rf_data.shape
+        return np.r_[np.zeros((int(start * sampling_frequency + 0.5), m)), rf_data]
+
     def xdc_free(self, th):
         self.e.xdc_free(th, nargout=0)

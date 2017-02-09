@@ -1,0 +1,12 @@
+{
+  "transducer_frequency": 3e6,
+  "sampling_frequency": 1e8,
+  "element_count": 192,
+  "element_width": 5.133333333333333e-4,
+  "element_height": 5e-3,
+  "kerf": 2.5666666666666666e-05,
+  "focus": [0.0, 0.0, 5e-2],
+  "active_count": 64,
+  "z_focus": 5e-2,
+  "line_count": 129
+}

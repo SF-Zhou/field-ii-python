@@ -14,6 +14,16 @@ class MyTestCase(unittest.TestCase):
         self.assertTrue(result)
         self.assertEqual(result[0].shape[1], 32)
 
+    def test_linear_array_imaging_build(self):
+        pool = field.MatlabPool(engine_count=2)
+        para = simulate.Parameter()
+        para.load(os.path.join(os.path.dirname(os.path.dirname(__file__)),
+                               'configs', 'linear_array_imaging.json'))
+        task = list(range(para.line_count // 2 - 2, para.line_count // 2 + 2 + 1))
+        result = pool.parallel(simulate.LinearArrayImagingWorker, task=task, args=(para,))
+        self.assertTrue(isinstance(result, list))
+        self.assertEqual(len(result), len(task))
+
 
 if __name__ == '__main__':
     unittest.main()
