@@ -64,12 +64,16 @@ class Parameter(AttachAbility):
         return self.getter()
 
     @property
+    def row_count(self) -> int:  # Number of rows in image
+        return self.getter()
+
+    @property
     def pixel_width(self) -> float:
         return self.getter()
 
     @property
     def z_focus(self):  # Transmit focus
-        return self.getter()
+        return self.focus[2]
 
     @property
     def z_start(self):  # Start point on vertical direction
@@ -89,6 +93,10 @@ class Parameter(AttachAbility):
 
     @property
     def dynamic_range(self):  # dB
+        return self.getter()
+
+    @property
+    def data_length(self):
         return self.getter()
 
     @property
@@ -127,6 +135,10 @@ class Parameter(AttachAbility):
     @property
     def image_height(self) -> float:  # Height of image sector
         return self.z_size
+
+    @property
+    def pixel_height(self) -> float:
+        return self.image_height / self.row_count
 
     def load(self, filename):
         with open(filename) as f:

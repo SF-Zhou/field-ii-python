@@ -68,6 +68,10 @@ class MatlabEngine:
         self.e.xdc_focus(th, self.e.transpose(matlab.double(np.array(times).tolist())),
                          matlab.double(np.array(points).tolist()), nargout=0)
 
+    def xdc_focus_times(self, th, times, delays: np.ndarray):
+        self.e.xdc_focus_times(th, self.e.transpose(matlab.double(np.array(times).tolist())),
+                               matlab.double(np.array(delays).tolist()), nargout=0)
+
     def xdc_apodization(self, th, times, values: np.ndarray):
         self.e.xdc_apodization(th, self.e.transpose(matlab.double(np.array(times).tolist())),
                                matlab.double(np.array(values).tolist()), nargout=0)
@@ -90,6 +94,11 @@ class MatlabEngine:
 
     def scat(self, th1, th2, points: np.ndarray, amplitudes: np.ndarray, sampling_frequency: float):
         rf_data, start = self.calc_scat(th1, th2, points, amplitudes)
+        _, m = rf_data.shape
+        return np.r_[np.zeros((int(start * sampling_frequency + 0.5), m)), rf_data]
+
+    def scat_multi(self, th1, th2, points: np.ndarray, amplitudes: np.ndarray, sampling_frequency: float):
+        rf_data, start = self.calc_scat_multi(th1, th2, points, amplitudes)
         _, m = rf_data.shape
         return np.r_[np.zeros((int(start * sampling_frequency + 0.5), m)), rf_data]
 
