@@ -48,7 +48,7 @@ class MultiScatWorker(field.MatlabWorker):
             self.e.xdc_apodization(emit_aperture, [0], apo_vector)
             rf_data = self.e.scat_multi(emit_aperture, receive_aperture,
                                         phantom_positions, phantom_amplitudes,
-                                        para.sampling_frequency)
+                                        para.sampling_frequency, para.data_length)
             result.append(rf_data)
         self.e.xdc_free(emit_aperture)
         self.e.xdc_free(receive_aperture)

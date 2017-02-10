@@ -97,10 +97,17 @@ class MatlabEngine:
         _, m = rf_data.shape
         return np.r_[np.zeros((int(start * sampling_frequency + 0.5), m)), rf_data]
 
-    def scat_multi(self, th1, th2, points: np.ndarray, amplitudes: np.ndarray, sampling_frequency: float):
-        rf_data, start = self.calc_scat_multi(th1, th2, points, amplitudes)
-        _, m = rf_data.shape
-        return np.r_[np.zeros((int(start * sampling_frequency + 0.5), m)), rf_data]
+    def scat_multi(self, th1, th2, points: np.ndarray, amplitudes: np.ndarray,
+                   sampling_frequency: float, data_length: int):
+        rf_data, t = self.calc_scat_multi(th1, th2, points, amplitudes)
+        start = int(round(t * sampling_frequency))
+        n, m = rf_data.shape
+        l = min(data_length, n + start)
+
+        matrix = np.zeros((m, data_length))
+        matrix[:, start:l] = rf_data[:l-start, :].T
+
+        return matrix
 
     def xdc_free(self, th):
         self.e.xdc_free(th, nargout=0)
