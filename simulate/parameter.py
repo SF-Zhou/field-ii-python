@@ -68,10 +68,6 @@ class Parameter(AttachAbility):
         return self.getter()
 
     @property
-    def pixel_width(self) -> float:
-        return self.getter()
-
-    @property
     def z_focus(self):  # Transmit focus
         return self.focus[2]
 
@@ -137,8 +133,16 @@ class Parameter(AttachAbility):
         return self.z_size
 
     @property
+    def pixel_width(self) -> float:
+        return self.element_width + self.kerf
+
+    @property
     def pixel_height(self) -> float:
         return self.image_height / self.row_count
+
+    @property
+    def active_count(self) -> int:
+        return self.element_count - self.line_count + 1
 
     def load(self, filename):
         with open(filename) as f:
