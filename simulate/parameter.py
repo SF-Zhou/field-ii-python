@@ -1,3 +1,4 @@
+import os
 import json
 import typing
 import traceback
@@ -29,7 +30,18 @@ class Parameter(AttachAbility):
 
     @property
     def save_path(self):
-        return self.getter()
+        value = self.getter()
+        if not os.path.exists(value):
+            os.system('mkdir -p {}'.format(value))
+        return value
+
+    @property
+    def signal_path(self):
+        return os.path.join(self.save_path, 'signal')
+
+    @property
+    def image_path(self):
+        return os.path.join(self.save_path, 'image')
 
     @property
     def transducer_frequency(self) -> float:  # [Hz]

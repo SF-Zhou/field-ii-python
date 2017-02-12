@@ -1,9 +1,7 @@
 import os
 import sys
 import field
-import method
 import simulate
-import viewer
 import numpy as np
 
 if len(sys.argv) != 3:
@@ -25,6 +23,7 @@ pool = field.MatlabPool(engine_count=4)
 task = list(range(para.line_count))
 
 lines = pool.parallel(worker, task=task, args=(para,))
-image_data = np.dstack(lines)
-image = method.delay_and_sum(image_data, para)
-viewer.show(image, para)
+
+with open(para.signal_path, 'wb') as f:
+    for line in lines:
+        f.write(np.array(line, dtype=np.float32).tobytes())
