@@ -44,6 +44,10 @@ class Parameter(AttachAbility):
         return os.path.join(self.save_path, 'image')
 
     @property
+    def worker(self):
+        return self.getter()
+
+    @property
     def transducer_frequency(self) -> float:  # [Hz]
         return self.getter()
 
