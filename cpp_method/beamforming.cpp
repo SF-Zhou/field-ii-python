@@ -61,7 +61,7 @@ int main(int argc, char* argv[]) {
 
     if (para.image_path.length()) {
         // write image to file
-        ofstream output(para.image_path);
+        ofstream output(para.image_path + '.' + args.method);
         output.write((char *)image, para.line_count * para.row_count * sizeof(float));
     } else {
         // write image to stdout
