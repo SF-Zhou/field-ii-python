@@ -47,6 +47,9 @@ int main(int argc, char* argv[]) {
     if (args.has_file) {
         ifstream signal_file(args.signal_path);
         read_signals(signal_file);
+    } else if (para.signal_path.length()){
+        ifstream signal_file(para.signal_path);
+        read_signals(signal_file);
     } else {
         read_signals(cin);
     }
@@ -56,7 +59,13 @@ int main(int argc, char* argv[]) {
     auto beamforming = method_mapper[args.method];
     beamforming(signals, image, para);
 
-    // write image to stdout
-    cout.write((char *)image, para.line_count * para.row_count * sizeof(float));
+    if (para.image_path.length()) {
+        // write image to file
+        ofstream output(para.image_path);
+        output.write((char *)image, para.line_count * para.row_count * sizeof(float));
+    } else {
+        // write image to stdout
+        cout.write((char *)image, para.line_count * para.row_count * sizeof(float));
+    }
     return 0;
 }

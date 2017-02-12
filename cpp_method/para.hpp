@@ -23,6 +23,9 @@ struct Para {
     float pixel_height;
     float z_start;
 
+    string signal_path;
+    string image_path;
+
     void load(string config_file_name) {
         ifstream config_file(config_file_name);
         json j;
@@ -38,6 +41,10 @@ struct Para {
         pixel_width = double(j["element_width"]) + double(j["kerf"]);
         pixel_height = double(j["z_size"]) / double(j["row_count"]);
         z_start = j["z_start"];
+
+        string save_path = j["save_path"];
+        signal_path = save_path + "/signal";
+        image_path = save_path + "/image";
     }
 };
 
