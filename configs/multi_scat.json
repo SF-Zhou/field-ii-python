@@ -1,4 +1,5 @@
 {
+  "save_path": "data/multi_scat",
   "transducer_frequency": 5e6,
   "sampling_frequency": 4e7,
   "element_count": 128,

@@ -28,6 +28,10 @@ class Parameter(AttachAbility):
         pass
 
     @property
+    def save_path(self):
+        return self.getter()
+
+    @property
     def transducer_frequency(self) -> float:  # [Hz]
         return self.getter()
 
