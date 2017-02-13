@@ -25,8 +25,8 @@ map<string, function<void (float*, float*, Para&)> > method_mapper = {
     key_value(optimized_reversed_method)
 };
 
-float signals[2048 * 128 * 64 * 2];
-float image[1024 * 64 * 2];
+float signals[2048 * 192 * 96 + 64];
+float image[1024 * 96 + 64];
 Para para;
 Args args;
 
