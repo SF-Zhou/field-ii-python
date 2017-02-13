@@ -5,6 +5,7 @@
 #include <chrono>
 #include <cassert>
 #include <functional>
+#include "func.hpp"
 #include "para.hpp"
 #include "args.hpp"
 #include "method/delay_and_sum.hpp"

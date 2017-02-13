@@ -1,4 +1,4 @@
-#include <cmath>
+#include "../func.hpp"
 #include "../para.hpp"
 
 

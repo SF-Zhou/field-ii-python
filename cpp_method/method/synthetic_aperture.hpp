@@ -1,10 +1,5 @@
-#include <cmath>
+#include "../func.hpp"
 #include "../para.hpp"
-
-
-inline float sqr(float a) {
-    return a * a;
-}
 
 
 void synthetic_aperture(float* signals, float* image, const Para& para) {
