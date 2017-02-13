@@ -1,4 +1,4 @@
-# Field.II.Python
+# [Field.II.Python](https://github.com/SF-Zhou/Field.II.Python)
 
 ## Features
 
@@ -32,10 +32,72 @@ nohup /Applications/MATLAB_R2016b.app/bin/matlab &
 disown
 ```
 
-## Execute
+## Simulate
 
 ```shell
-python3 zombie.py MultiScat configs/multi_scat.json
+python3 simu.py configs/multi_scat.json
 ```
 
-Default config files are in `configs` folder, and default workers are in simulate module.
+Default config files are in `configs` folder. And the final signal result will be stored in **save_path** configured in config file, filename is `signal`.
+
+**multi_scat.json** config:
+
+```json
+{
+  "save_path": "data/multi_scat",
+  "worker": "MultiScat",
+  "transducer_frequency": 5e6,
+  "sampling_frequency": 4e7,
+  "element_count": 128,
+  "element_width": 2.798e-4,
+  "element_height": 4e-3,
+  "kerf": 2.5e-05,
+  "focus": [0.0, 0.0, 3.3e-2],
+  "line_count": 64,
+  "row_count": 1024,
+  "data_length": 2048,
+  "dynamic_range": 20,
+  "z_start": 5e-3,
+  "z_size": 40e-3,
+  "point_count": 6,
+  "light_points": [
+    [-2e-3, 0e-3, 15e-3],
+    [ 2e-3, 0e-3, 15e-3],
+    [-4e-4, 0e-3, 25e-3],
+    [ 4e-4, 0e-3, 25e-3],
+    [-2e-3, 0e-3, 35e-3],
+    [ 2e-3, 0e-3, 35e-3]
+  ]
+}
+```
+
+## Calculation
+
+Firstly, make sure the **cpp_method** has been built successfully.
+
+```shell
+cd cpp_method
+make
+cd ..  # return repo root path
+```
+
+Execute beamforming of C++ version:
+
+```
+cpp_method/bin/beamforming -c configs/multi_scat.json -m synthetic_aperture -t 5
+```
+
+* -c: config file path
+* -m: calculation method
+* -t: running times
+
+There is also another C++ version without console output to improve accuracy of time measuring: `cpp_method/bin/measure`.
+
+The final image data will be stored in **save_path** configured in config file, filename is `image.{method}`.
+
+## Show Image
+
+```shell
+python3 show.py configs/multi_scat.json delay_and_sum
+```
+
