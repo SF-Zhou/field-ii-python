@@ -1,7 +1,6 @@
 import os
 import sys
 import simulate
-import subprocess
 
 
 if len(sys.argv) < 3:
