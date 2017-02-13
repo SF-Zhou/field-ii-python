@@ -18,11 +18,11 @@ para = simulate.Parameter()
 para.load(config_path)
 
 cpp_method_dir = os.path.join(os.path.dirname(__file__), 'cpp_method')
-return_code = os.system('cd "{}" && make'.format(cpp_method_dir))
+execution_file = 'bin/{}'.format('beamforming' if times == 1 else 'measure')
+return_code = os.system('cd "{}" && make {}'.format(cpp_method_dir, execution_file))
 if return_code:
     raise EnvironmentError('Compile C++ Method Error with Return Code {}'.format(return_code))
 
-execution_file = 'bin/{}'.format('beamforming' if times == 1 else 'measure')
 execution_path = os.path.join(cpp_method_dir, execution_file)
 if not os.path.exists(execution_path):
     raise EnvironmentError('Not Found Execution File')
