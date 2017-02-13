@@ -19,6 +19,7 @@ struct Para {
     float pixel_width;
     float pixel_height;
     float z_start;
+    float z_size;
 
     string signal_path;
     string image_path;
@@ -38,6 +39,7 @@ struct Para {
         pixel_width = double(j["element_width"]) + double(j["kerf"]);
         pixel_height = double(j["z_size"]) / double(j["row_count"]);
         z_start = j["z_start"];
+        z_size = j["z_size"];
 
         string save_path = j["save_path"];
         signal_path = save_path + "/signal";
