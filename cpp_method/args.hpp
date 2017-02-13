@@ -10,6 +10,8 @@ struct Args {
     bool has_method = false;
     bool has_file = false;
     bool has_stdin = true;
+    int times = 1;
+
     string signal_path;
     string config_path;
     string method;
@@ -34,6 +36,10 @@ struct Args {
                 assert(i < argc);
                 method = argv[i];
                 has_method = true;
+            } else if (arg == "-t") {
+                ++ i;
+                assert(i < argc);
+                times = stoi(argv[i]);
             } else {
                 cerr << "unkonwn arg: " << arg << endl;
                 assert(false);
