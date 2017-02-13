@@ -3,6 +3,8 @@
 
 
 void delay_and_sum(float* signals, float* image, const Para& para) {
+    const int offset = (para.element_count - para.line_count) / 2;
+
     int image_idx = 0;
     ff (i, para.line_count) {
 
@@ -15,7 +17,7 @@ void delay_and_sum(float* signals, float* image, const Para& para) {
             float vertical_distance = para.z_start + j * para.pixel_height;
 
             ff (k, para.element_count) {
-                float horizontal_distance = (i + 32 - k) * para.pixel_width;
+                float horizontal_distance = (i + offset - k) * para.pixel_width;
                 float total_distance = vertical_distance + sqrt(
                         vertical_distance * vertical_distance + horizontal_distance * horizontal_distance
                 );
