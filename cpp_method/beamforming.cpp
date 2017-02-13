@@ -10,13 +10,15 @@
 #include "args.hpp"
 #include "method/delay_and_sum.hpp"
 #include "method/synthetic_aperture.hpp"
+#include "method/reversed_method.hpp"
 using namespace std;
 
 #define key_value(m) {#m, m}
 
 map<string, function<void (float*, float*, Para&)> > method_mapper = {
     key_value(delay_and_sum),
-    key_value(synthetic_aperture)
+    key_value(synthetic_aperture),
+    key_value(reversed_method)
 };
 
 float signals[2048 * 128 * 64 * 2];
