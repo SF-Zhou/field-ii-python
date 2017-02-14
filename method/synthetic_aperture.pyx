@@ -1,4 +1,4 @@
-import simulate
+import param
 import numpy as np
 
 
@@ -6,7 +6,7 @@ cdef double hypotenuse(double a, double b):
     return (a * a + b * b) ** 0.5
 
 
-def synthetic_aperture(image_data: np.ndarray, para: simulate.Parameter):
+def synthetic_aperture(image_data: np.ndarray, para: param.Parameter):
     image = np.zeros((para.line_count, para.row_count))
 
     cdef int i, j, k, e, idx

@@ -1,10 +1,10 @@
-import simulate
+import param
 import numpy as np
 from PIL import Image
 from scipy import signal
 
 
-def show(image: np.ndarray, para: simulate.Parameter):
+def show(image: np.ndarray, para: param.Parameter):
     data = np.abs(signal.hilbert(image)).transpose()
     data[data == 0] = 1e-100
     env = np.multiply(np.log10(data), 20)

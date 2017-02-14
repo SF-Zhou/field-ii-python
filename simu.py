@@ -1,5 +1,6 @@
 import os
 import sys
+import param
 import field
 import simulate
 import numpy as np
@@ -11,7 +12,7 @@ config_path = sys.argv[1]
 if not os.path.exists(config_path):
     raise FileNotFoundError("Not Found {}".format(config_path))
 
-para = simulate.Parameter()
+para = param.Parameter()
 para.load(config_path)
 
 worker = getattr(simulate, para.worker + 'Worker', None)

@@ -1,6 +1,6 @@
 import os
 import sys
-import simulate
+import param
 
 
 if len(sys.argv) < 3:
@@ -13,7 +13,7 @@ if not os.path.exists(config_path):
 method = sys.argv[2]
 times = int(sys.argv[3]) if len(sys.argv) > 3 else 1
 
-para = simulate.Parameter()
+para = param.Parameter()
 para.load(config_path)
 
 cpp_method_dir = os.path.join(os.path.dirname(__file__), 'cpp_method')

@@ -1,7 +1,7 @@
 import os
 import sys
+import param
 import viewer
-import simulate
 import numpy as np
 
 
@@ -14,7 +14,7 @@ if not os.path.exists(config_path):
     raise FileNotFoundError("Not Found {}".format(config_path))
 method = sys.argv[2]
 
-para = simulate.Parameter()
+para = param.Parameter()
 para.load(config_path)
 
 image_path = para.image_path + '.' + method

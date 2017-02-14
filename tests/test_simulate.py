@@ -1,5 +1,6 @@
 import os
 import field
+import param
 import simulate
 import unittest
 
@@ -7,7 +8,7 @@ import unittest
 class MyTestCase(unittest.TestCase):
     def test_simple_build(self):
         pool = field.MatlabPool(engine_count=1)
-        para = simulate.Parameter()
+        para = param.Parameter()
         para.load(os.path.join(os.path.dirname(os.path.dirname(__file__)),
                                'configs', 'simple.json'))
         result = pool.parallel(simulate.SimpleWorker, task=[], args=(para,))
@@ -16,7 +17,7 @@ class MyTestCase(unittest.TestCase):
 
     def test_linear_array_imaging_build(self):
         pool = field.MatlabPool(engine_count=2)
-        para = simulate.Parameter()
+        para = param.Parameter()
         para.load(os.path.join(os.path.dirname(os.path.dirname(__file__)),
                                'configs', 'linear_array_imaging.json'))
         task = list(range(para.line_count // 2 - 2, para.line_count // 2 + 2 + 1))

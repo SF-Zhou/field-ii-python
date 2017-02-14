@@ -3,12 +3,12 @@
 ###########################################
 
 import field
+import param
 import numpy as np
-from . import Parameter
 
 
 class LinearArrayImagingWorker(field.MatlabWorker):
-    def run(self, para: Parameter, *args):
+    def run(self, para: param.Parameter, *args):
         self.e.field_init()
         self.e.set_sampling(para.sampling_frequency)
 
