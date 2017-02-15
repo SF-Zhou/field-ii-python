@@ -21,10 +21,8 @@ void reversed_method(float* signals, float* image, const Para& para) {
             const int C = sqr(i + offset - k);
 
             fff(d, min_delay + 1, para.data_length - 1) {
-                if (* ++current_signal == 0) continue;
-
                 const int j = A * d - B * C / d - empty_j;
-
+                ++ current_signal;
                 if (0 <= j && j < para.row_count) {
                     image_line[j] += *current_signal;
                 }
