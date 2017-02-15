@@ -1,1 +1,1 @@
-from .show import show
+from .gene import generate
