@@ -13,6 +13,7 @@
 #include "method/reversed_method.hpp"
 #include "method/stream_reversed_method.hpp"
 #include "method/optimized_reversed_method.hpp"
+#include "method/reversed_synthetic_aperture.hpp"
 using namespace std;
 
 #define key_value(m) {#m, m}
@@ -22,7 +23,8 @@ map<string, function<void (float*, float*, Para&)> > method_mapper = {
     key_value(synthetic_aperture),
     key_value(reversed_method),
     key_value(stream_reversed_method),
-    key_value(optimized_reversed_method)
+    key_value(optimized_reversed_method),
+    key_value(reversed_synthetic_aperture)
 };
 
 float signals[2048 * 192 * 96 + 64];

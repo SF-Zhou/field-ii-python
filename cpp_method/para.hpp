@@ -16,6 +16,7 @@ struct Para {
 
     float sampling_frequency;
     float ratio;
+    float inv_ratio;
     float pixel_width;
     float pixel_height;
     float z_start;
@@ -36,6 +37,7 @@ struct Para {
 
         sampling_frequency = j["sampling_frequency"];
         ratio = sampling_frequency / 1540;
+        inv_ratio = 1 / ratio;
         pixel_width = double(j["element_width"]) + double(j["kerf"]);
         pixel_height = double(j["z_size"]) / double(j["row_count"]);
         z_start = j["z_start"];
