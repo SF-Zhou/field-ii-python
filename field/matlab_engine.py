@@ -109,5 +109,17 @@ class MatlabEngine:
 
         return matrix
 
+    def scat_all(self, th1, th2, points: np.ndarray, amplitudes: np.ndarray,
+                 sampling_frequency: float, data_length: int):
+        rf_data, t = self.calc_scat_all(th1, th2, points, amplitudes, 1)
+        start = int(round(t * sampling_frequency))
+        n, m = rf_data.shape
+        l = min(data_length, n + start)
+
+        matrix = np.zeros((m, data_length))
+        matrix[:, start:l] = rf_data[:l-start, :].T
+
+        return matrix
+
     def xdc_free(self, th):
         self.e.xdc_free(th, nargout=0)

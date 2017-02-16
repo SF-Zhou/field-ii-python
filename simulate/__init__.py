@@ -1,3 +1,4 @@
 from .linear_array_imaging_worker import LinearArrayImagingWorker
 from .multi_scat_worker import MultiScatWorker
 from .simple_worker import SimpleWorker
+from .synthetic_aperture import SyntheticApertureWorker

@@ -19,7 +19,8 @@ worker = getattr(simulate, para.worker + 'Worker', None)
 if worker is None:
     raise FileNotFoundError("Not Found {}Worker in simulate module".format(para.worker))
 
-pool = field.MatlabPool(engine_count=4)
+engine_count = 1 if para.worker == "SyntheticAperture" else 4
+pool = field.MatlabPool(engine_count=engine_count)
 task = list(range(para.line_count))
 
 lines = pool.parallel(worker, task=task, args=(para,))
