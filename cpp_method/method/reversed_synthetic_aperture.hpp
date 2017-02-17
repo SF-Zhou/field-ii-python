@@ -33,8 +33,9 @@ void reversed_synthetic_aperture(float* signals, float* image, const Para& para)
         execute(printf("# Current Emit: %d\n", e));
         float *signal_frame = signals + e * para.element_count * para.data_length;
 
-        for (int k = (e & 1); k < element_count; k += 2) {
+        ff (k, element_count) {
             const int center = (e + k) >> 1;
+            const int is_even = e + k - (center << 1) - 1;
             float *signal_line = signal_frame + k * data_length;
             const float hori_dis_sqr = sqr(e - k) * pixel_width_d_height_sqr_d_4;
 
@@ -49,14 +50,12 @@ void reversed_synthetic_aperture(float* signals, float* image, const Para& para)
                 const float A_2 = A + A;
 
                 float j_sqr = b_sqr;
-                float i_sqr = -A;
-                float i_2 = 0;
+                float i_sqr = is_even ? -A : -1.75 * A;
 
                 int down = sqrt(j_sqr) - min_j;
-                execute(assert(down >= 0));
-                image[center * row_count + down] += v;
+                image[center * row_count + down] += is_even ? v : 0;
 
-                int left = center - 1, right = center + 1;
+                int left = center + is_even, right = center + 1;
                 while(left >= 0 && right < line_count) {
                     i_sqr += A_2;
                     j_sqr -= i_sqr;
