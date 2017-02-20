@@ -14,7 +14,7 @@ void reversed_synthetic_aperture(float* signals, float* image, const Para& para)
     const float pixel_width = para.pixel_width;
     const float inv_ratio = para.inv_ratio;
     const float ratio_height = para.ratio * pixel_height;
-    const float ratio_height_4 = ratio_height * 4;
+    const float ratio_height_2 = ratio_height * 2;
     const float inv_ratio_d_height_sqr = sqr(inv_ratio * inv_pixel_height);
     const float inv_ratio_d_height_sqr_d_4 = inv_ratio_d_height_sqr / 4;
     const float min_j = z_start * inv_pixel_height;
@@ -39,7 +39,7 @@ void reversed_synthetic_aperture(float* signals, float* image, const Para& para)
             float *signal_line = signal_frame + k * data_length;
             const float hori_dis_sqr = sqr(e - k) * pixel_width_d_height_sqr_d_4;
 
-            const int min_d = sqrt(hori_dis_sqr + z_start_d_height_sqr) * ratio_height_4 + 1;
+            const int min_d = ceil(sqrt(hori_dis_sqr + z_start_d_height_sqr) * ratio_height_2);
             fff (d, min_d, data_length - 1) {
                 const float total_dis_sqr = sqr(d) * inv_ratio_d_height_sqr_d_4;
                 execute(assert(total_dis_sqr >= hori_dis_sqr + z_start_d_height_sqr));
