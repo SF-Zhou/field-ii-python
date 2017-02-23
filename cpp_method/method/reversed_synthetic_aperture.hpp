@@ -1,12 +1,6 @@
 #include "../func.hpp"
 #include "../para.hpp"
 
-#ifndef MEASURE
-    #define execute(a) a;
-#else
-    #define execute(a)
-#endif
-
 void reversed_synthetic_aperture(float* signals, float* image, const Para& para) {
     const float z_start = para.z_start;
     const float pixel_height = para.pixel_height;
@@ -50,42 +44,26 @@ void reversed_synthetic_aperture(float* signals, float* image, const Para& para)
                 const float A_2 = A + A;
 
                 float j_sqr = b_sqr;
-                float i_sqr = is_even ? -A : -1.75 * A;
+                float i_sqr = is_even ? A : 0.25 * A;
 
                 int down = sqrt(j_sqr) - min_j;
-                image[center * row_count + down] += is_even ? v : 0;
+                image[down * line_count + center] += is_even ? v : 0;
 
                 int left = center + is_even, right = center + 1;
-                while(left >= 0 && right < line_count) {
-                    i_sqr += A_2;
+
+                const int max_l = sqrt((j_sqr - z_start_d_height_sqr - i_sqr) / A + 0.5) - 0.5;
+                const int times = min(max(left + 1, line_count - right), max_l);
+
+                ff(t, times) {
                     j_sqr -= i_sqr;
+                    i_sqr += A_2;
+
                     const int down = sqrt(j_sqr) - min_j;
-                    if (down < 0) break;
-                    if (down < row_count) {
-                        image[left * row_count + down] += v;
-                        image[right * row_count + down] += v;
-                    }
+                    execute(assert(down >= 0));
+
+                    image[down * line_count + left] += v;
+                    image[down * line_count + right] += v;
                     left --, right ++;
-                }
-                while(left >= 0) {
-                    i_sqr += A_2;
-                    j_sqr -= i_sqr;
-                    const int down = sqrt(j_sqr) - min_j;
-                    if (down < 0) break;
-                    if (down < row_count) {
-                        image[left * row_count + down] += v;
-                    }
-                    left --;
-                }
-                while(right < line_count) {
-                    i_sqr += A_2;
-                    j_sqr -= i_sqr;
-                    const int down = sqrt(j_sqr) - min_j;
-                    if (down < 0) break;
-                    if (down < row_count) {
-                        image[right * row_count + down] += v;
-                    }
-                    right ++;
                 }
             }
         }
