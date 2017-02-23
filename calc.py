@@ -28,4 +28,4 @@ if not os.path.exists(execution_path):
 
 return_code = os.system('{} -c {} -m {} -t {}'.format(execution_path, config_path, method, str(times)))
 if return_code:
-    raise "Execution Return {}".format(return_code)
+    raise RuntimeError("Execution Return {}".format(return_code))
