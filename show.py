@@ -14,7 +14,7 @@ config_path = sys.argv[1]
 if not os.path.exists(config_path):
     raise FileNotFoundError("Not Found {}".format(config_path))
 method = sys.argv[2]
-save = len(sys.argv) == 4
+transpose = len(sys.argv) == 4
 
 
 para = param.Parameter()
@@ -26,15 +26,16 @@ if not os.path.exists(image_path):
     raise FileNotFoundError("Not Found {}".format(image_path))
 
 image = np.fromfile(image_path, dtype=np.float32)
-image.shape = para.line_count, para.row_count
+if transpose:
+    image.shape = para.row_count, para.line_count
+    image = image.T
+else:
+    image.shape = para.line_count, para.row_count
 im = viewer.generate(image, para)
 
-if save:
-    save_path = os.path.abspath(image_path + '.png')
-    im.save(save_path)
-    print('Saved Image in {}'.format(save_path))
+save_path = os.path.abspath(image_path + '.png')
+im.save(save_path)
+print('Saved Image in {}'.format(save_path))
 
-    if platform.system() == 'Darwin':
-        os.system("open {}".format(save_path))
-else:
-    im.show()
+if platform.system() == 'Darwin':
+    os.system("open {}".format(save_path))
