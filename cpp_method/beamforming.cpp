@@ -28,7 +28,8 @@ map<string, function<void (float*, float*, Para&)> > method_mapper = {
 };
 
 float signals[2048 * 192 * 96 + 64];
-float image[1024 * 96 + 64];
+float image_base[1024 * 96 * 3];
+float *image = image_base + 1024 * 96;
 Para para;
 Args args;
 
