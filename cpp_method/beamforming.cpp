@@ -14,6 +14,9 @@
 #include "method/stream_reversed_method.hpp"
 #include "method/optimized_reversed_method.hpp"
 #include "method/reversed_synthetic_aperture.hpp"
+#include "method/RSA_deduction.hpp"
+#include "method/RSA_linear_approximation.hpp"
+#include "method/RSA_array_access.hpp"
 using namespace std;
 
 #define key_value(m) {#m, m}
@@ -24,7 +27,10 @@ map<string, function<void (float*, float*, Para&)> > method_mapper = {
     key_value(reversed_method),
     key_value(stream_reversed_method),
     key_value(optimized_reversed_method),
-    key_value(reversed_synthetic_aperture)
+    key_value(reversed_synthetic_aperture),
+    key_value(RSA_deduction),
+    key_value(RSA_linear_approximation),
+    key_value(RSA_array_access)
 };
 
 float signals[2048 * 192 * 96 + 64];
