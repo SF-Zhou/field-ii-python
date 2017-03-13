@@ -50,18 +50,19 @@ void measure_time(function<void (float*, float*, Para&)> method,
 }
 
 
-void read_signals(istream & input) {
+void read_signals(const string & in_file) {
     int total_length = para.line_count * para.element_count * para.data_length;
-    input.read((char *)signals, total_length * sizeof(float));
-    if (total_length * sizeof(float) != input.gcount()) {
-        std::cerr << "Echo Singals from stdin Not Enougth" << endl;
-        assert(false);
-    }
 
-    for (char c; input >> c; ) {
-        std::cerr << "Echo Singals from stdin Exceed" << endl;
-        assert(false);
-    }
+    FILE *f = fopen(in_file.c_str(), "rb");
+    int ret = fread(signals, sizeof(float), total_length, f);
+    assert(ret == total_length);
+    fclose(f);
+}
+
+void write_image(const string & out_file) {
+    FILE *f = fopen(out_file.c_str(), "wb");
+    fwrite(image, sizeof(float), para.line_count * para.row_count, f);
+    fclose(f);
 }
 
 int main(int argc, char* argv[]) {
@@ -75,13 +76,11 @@ int main(int argc, char* argv[]) {
     // load input signals
     assert(args.has_method);
     if (args.has_file) {
-        ifstream signal_file(args.signal_path);
-        read_signals(signal_file);
+        read_signals(args.signal_path);
     } else if (para.signal_path.length()){
-        ifstream signal_file(para.signal_path);
-        read_signals(signal_file);
+        read_signals(para.signal_path);
     } else {
-        read_signals(cin);
+        std::cerr << "Input Data File Not Found!";
     }
 
     // load method
@@ -89,13 +88,6 @@ int main(int argc, char* argv[]) {
     auto beamforming = method_mapper[args.method];
     measure_time(beamforming, args.method, args.times);
 
-    if (para.image_path.length()) {
-        // write image to file
-        ofstream output(para.image_path + '.' + args.method);
-        output.write((char *)image, para.line_count * para.row_count * sizeof(float));
-    } else {
-        // write image to stdout
-        cout.write((char *)image, para.line_count * para.row_count * sizeof(float));
-    }
+    write_image(para.image_path + '.' + args.method);
     return 0;
 }
