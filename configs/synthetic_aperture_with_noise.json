@@ -1,5 +1,5 @@
 {
-  "save_path": "/t/data/synthetic_aperture_with_noise",
+  "save_path": "data/synthetic_aperture_with_noise",
   "worker": "SyntheticAperture",
   "transducer_frequency": 5e6,
   "sampling_frequency": 4e7,

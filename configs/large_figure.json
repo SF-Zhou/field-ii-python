@@ -1,5 +1,5 @@
 {
-  "save_path": "/t/data/large_figure",
+  "save_path": "data/large_figure",
   "worker": "MultiScat",
   "transducer_frequency": 5e6,
   "sampling_frequency": 4e7,
