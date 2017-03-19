@@ -1,17 +1,12 @@
 import math
 import functools
 import threading
-import matlab.engine
-from . import MatlabEngine
+from . import engine_pool
 
 
 class MatlabPool:
     def __init__(self, engine_count=2):
-        session_names = matlab.engine.find_matlab()
-        if len(session_names) < engine_count:
-            raise EnvironmentError("Not Found Enough MATLAB Sessions! {0}/{1}"
-                                   .format(len(session_names), engine_count))
-        self.engines = list(map(MatlabEngine, session_names[:engine_count]))
+        self.engines = engine_pool.need(engine_count)
         self.engine_count = engine_count
 
     @property
