@@ -1,0 +1,26 @@
+{
+  "save_path": "data/LC64",
+  "worker": "SyntheticAperture",
+  "transducer_frequency": 5e6,
+  "sampling_frequency": 4e7,
+  "element_count": 64,
+  "element_width": 2.798e-4,
+  "element_height": 4e-3,
+  "kerf": 2.5e-05,
+  "focus": [0.0, 0.0, 3.3e-2],
+  "line_count": 64,
+  "row_count": 1024,
+  "data_length": 2048,
+  "dynamic_range": 20,
+  "z_start": 5e-3,
+  "z_size": 40e-3,
+  "point_count": 1000,
+  "light_points": [
+    [-2e-3, 0e-3, 15e-3],
+    [ 2e-3, 0e-3, 15e-3],
+    [-4e-4, 0e-3, 25e-3],
+    [ 4e-4, 0e-3, 25e-3],
+    [-2e-3, 0e-3, 35e-3],
+    [ 2e-3, 0e-3, 35e-3]
+  ]
+}
