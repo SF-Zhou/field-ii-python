@@ -1,5 +1,5 @@
 {
-  "save_path": "data/synthetic_aperture",
+  "save_path": "data/RC1024",
   "worker": "SyntheticAperture",
   "transducer_frequency": 5e6,
   "sampling_frequency": 4e7,
@@ -14,7 +14,7 @@
   "dynamic_range": 20,
   "z_start": 5e-3,
   "z_size": 40e-3,
-  "point_count": 6,
+  "point_count": 1000,
   "light_points": [
     [-2e-3, 0e-3, 15e-3],
     [ 2e-3, 0e-3, 15e-3],
