@@ -33,9 +33,9 @@ map<string, function<void (float*, float*, Para&)> > method_mapper = {
     key_value(RSA_array_access)
 };
 
-float signals[2048 * 192 * 96 + 64];
-float image_base[1024 * 96 * 3];
-float *image = image_base + 1024 * 96;
+float signals[2048 * 256 * 256 + 64];
+float image_base[2048 * 256 * 3];
+float *image = image_base + 2048 * 256;
 Para para;
 Args args;
 
