@@ -3,7 +3,7 @@ import param
 import numpy as np
 
 
-class SyntheticApertureWorker(field.MatlabWorker):
+class FastSyntheticApertureWorker(field.MatlabWorker):
     def run(self, para: param.Parameter, *args):
         self.e.field_init()
         self.e.set_sampling(para.sampling_frequency)
@@ -24,11 +24,27 @@ class SyntheticApertureWorker(field.MatlabWorker):
                                                    para.element_height,
                                                    para.kerf, 1, 5, para.focus)
         self.e.xdc_impulse(receive_aperture, impulse_response)
+        self.e.xdc_focus_times(receive_aperture, [0], np.zeros(para.element_count))
 
         phantom_positions, phantom_amplitudes = para.phantom
-        result = self.e.scat_all(emit_aperture, receive_aperture,
-                                 phantom_positions, phantom_amplitudes,
-                                 para.sampling_frequency, para.data_length)
+
+        result = []
+        for i in self.task:
+            print("calculate line {}".format(i))
+            x = (i - para.line_count / 2 + 1 / 2) * para.pixel_width
+
+            # set the focus for this direction
+            self.e.xdc_center_focus(emit_aperture, [x, 0, 0])
+
+            # set the active elements using the apodization
+            apo_vector = np.zeros(para.element_count)
+            apo_vector[i] = 1
+            self.e.xdc_apodization(emit_aperture, [0], apo_vector)
+
+            rf_data = self.e.scat_multi(emit_aperture, receive_aperture,
+                                        phantom_positions, phantom_amplitudes,
+                                        para.sampling_frequency, para.data_length)
+            result.append(rf_data)
 
         self.e.xdc_free(emit_aperture)
         self.e.xdc_free(receive_aperture)
