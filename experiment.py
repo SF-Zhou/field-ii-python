@@ -25,7 +25,7 @@ def listdir(folder):
     files = os.listdir(folder)
     return list(map(os.path.join, [folder] * len(files), files))
 
-config_paths = functools.reduce(lambda a, b: a + b, map(listdir, config_folders), [])
+config_paths = sorted(functools.reduce(lambda a, b: a + b, map(listdir, config_folders), []))
 
 for config_path in config_paths:
     success('config = {}'.format(config_path))
