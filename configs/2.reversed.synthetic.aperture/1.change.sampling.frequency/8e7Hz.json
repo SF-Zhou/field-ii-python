@@ -1,10 +1,8 @@
 {
-  "save_path": "data/8e7Hz",
-  "worker": "SyntheticAperture",
+  "worker": "FastSyntheticAperture",
   "transducer_frequency": 5e6,
   "sampling_frequency": 8e7,
   "element_count": 256,
-  "line_count": 256,
   "element_width": 2.798e-4,
   "element_height": 4e-3,
   "kerf": 2.5e-05,

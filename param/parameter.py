@@ -167,5 +167,9 @@ class Parameter(AttachAbility):
     def load(self, filename):
         with open(filename) as f:
             paras = json.load(f)
+            if 'save_path' not in paras and filename[:8] == 'configs/':
+                paras['save_path'] = 'data/' + filename[8:-5]
+            if 'line_count' not in paras and 'element_count' in paras:
+                paras['line_count'] = paras['element_count']
             for key, value in paras.items():
                 self.assign(value, name=key)

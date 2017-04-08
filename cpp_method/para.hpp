@@ -30,10 +30,15 @@ struct Para {
         json j;
         config_file >> j;
 
-        line_count = j["line_count"];
         row_count = j["row_count"];
         data_length = j["data_length"];
         element_count = j["element_count"];
+
+        try {
+          line_count = j.at("line_count");
+        } catch (std::out_of_range) {
+          line_count = element_count;
+        }
 
         sampling_frequency = j["sampling_frequency"];
         ratio = sampling_frequency / 1540;
@@ -43,10 +48,16 @@ struct Para {
         z_start = j["z_start"];
         z_size = j["z_size"];
 
-        string save_path = j["save_path"];
+        string save_path;
+        try {
+          save_path = j.at("save_path");
+        } catch (std::out_of_range) {
+          cout << config_file_name << endl;
+          int total_length = config_file_name.length();
+          save_path = string("data/") + config_file_name.substr(8, total_length - 8 - 5);
+        }
         signal_path = save_path + "/signal";
         image_path = save_path + "/image";
     }
 };
-
 #endif
