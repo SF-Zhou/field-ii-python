@@ -10,7 +10,7 @@ class MyTestCase(unittest.TestCase):
         pool = field.MatlabPool(engine_count=1)
         para = param.Parameter()
         para.load(os.path.join(os.path.dirname(os.path.dirname(__file__)),
-                               'configs', 'simple.json'))
+                               'configs', '0.base.config', 'simple.json'))
         result = pool.parallel(simulate.SimpleWorker, task=[], args=(para,))
         self.assertTrue(result)
         self.assertEqual(result[0].shape[1], 32)
@@ -19,7 +19,7 @@ class MyTestCase(unittest.TestCase):
         pool = field.MatlabPool(engine_count=2)
         para = param.Parameter()
         para.load(os.path.join(os.path.dirname(os.path.dirname(__file__)),
-                               'configs', 'linear_array_imaging.json'))
+                               'configs', '0.base.config', 'linear_array_imaging.json'))
         task = list(range(para.line_count // 2 - 2, para.line_count // 2 + 2 + 1))
         result = pool.parallel(simulate.LinearArrayImagingWorker, task=task, args=(para,))
         self.assertTrue(isinstance(result, list))
