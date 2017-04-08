@@ -52,7 +52,6 @@ struct Para {
         try {
           save_path = j.at("save_path");
         } catch (std::out_of_range) {
-          cout << config_file_name << endl;
           int total_length = config_file_name.length();
           save_path = string("data/") + config_file_name.substr(8, total_length - 8 - 5);
         }

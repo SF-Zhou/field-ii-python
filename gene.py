@@ -19,7 +19,7 @@ for config_path in sys.argv[1:]:
     if worker is None:
         raise FileNotFoundError("Not Found {}Worker in simulate module".format(para.worker))
 
-    engine_count = 1 if para.worker == "SyntheticAperture" else 4
+    engine_count = 1 if para.worker.endswith("SyntheticAperture") else 4
     pool = field.MatlabPool(engine_count=engine_count)
     task = list(range(para.line_count))
 
