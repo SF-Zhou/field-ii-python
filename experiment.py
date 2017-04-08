@@ -19,6 +19,7 @@ def success(*args):
     print(colored.fg(2), end='')
     print(*args, end='')
     print(colored.attr(0))
+    sys.stdout.flush()
 
 def listdir(folder):
     files = os.listdir(folder)
@@ -30,4 +31,6 @@ for config_path in config_paths:
     success('config = {}'.format(config_path))
     for method in methods:
         os.system('{} -c {} -m {} -t {}'.format(execution_path, config_path, method, times))
-    success('*' * 80)
+    success('\n')
+
+success('Finished!')
