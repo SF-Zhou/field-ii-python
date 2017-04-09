@@ -1,0 +1,58 @@
+nohup: ignoring input
+make: Nothing to be done for `all'.
+times = 20
+[38;5;2mconfig = configs/1.reversed.delay.and.sum/1.change.sampling.frequency/2e7Hz.json[0m
+delay_and_sum running time: 675.717 ms
+reversed_method running time: 308.433 ms
+optimized_reversed_method running time: 220.670 ms
+[38;5;2m
+[0m
+[38;5;2mconfig = configs/1.reversed.delay.and.sum/1.change.sampling.frequency/4e7Hz.json[0m
+delay_and_sum running time: 781.812 ms
+reversed_method running time: 611.516 ms
+optimized_reversed_method running time: 452.842 ms
+[38;5;2m
+[0m
+[38;5;2mconfig = configs/1.reversed.delay.and.sum/1.change.sampling.frequency/8e7Hz.json[0m
+delay_and_sum running time: 966.051 ms
+reversed_method running time: 1213.119 ms
+optimized_reversed_method running time: 904.758 ms
+[38;5;2m
+[0m
+[38;5;2mconfig = configs/1.reversed.delay.and.sum/2.change.element.count/ec.128.json[0m
+delay_and_sum running time: 210.205 ms
+reversed_method running time: 150.954 ms
+optimized_reversed_method running time: 122.458 ms
+[38;5;2m
+[0m
+[38;5;2mconfig = configs/1.reversed.delay.and.sum/2.change.element.count/ec.192.json[0m
+delay_and_sum running time: 457.912 ms
+reversed_method running time: 341.337 ms
+optimized_reversed_method running time: 259.326 ms
+[38;5;2m
+[0m
+[38;5;2mconfig = configs/1.reversed.delay.and.sum/2.change.element.count/ec.256.json[0m
+delay_and_sum running time: 781.048 ms
+reversed_method running time: 608.337 ms
+optimized_reversed_method running time: 459.133 ms
+[38;5;2m
+[0m
+[38;5;2mconfig = configs/1.reversed.delay.and.sum/3.change.row.count/rc.0512.json[0m
+delay_and_sum running time: 463.564 ms
+reversed_method running time: 608.267 ms
+optimized_reversed_method running time: 459.647 ms
+[38;5;2m
+[0m
+[38;5;2mconfig = configs/1.reversed.delay.and.sum/3.change.row.count/rc.1024.json[0m
+delay_and_sum running time: 780.412 ms
+reversed_method running time: 608.851 ms
+optimized_reversed_method running time: 458.855 ms
+[38;5;2m
+[0m
+[38;5;2mconfig = configs/1.reversed.delay.and.sum/3.change.row.count/rc.2048.json[0m
+delay_and_sum running time: 1333.260 ms
+reversed_method running time: 608.360 ms
+optimized_reversed_method running time: 438.655 ms
+[38;5;2m
+[0m
+[38;5;2mFinished![0m
