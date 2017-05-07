@@ -11,8 +11,6 @@ class AttachAbility:
     def getter(self):
         name = self.AttachFlag.format(self.current_name)
         obj = getattr(self, name, None)
-        if not obj:
-            raise ValueError("{} is NOT Set".format(self.current_name))
         return obj
 
     def assign(self, value, name=None):
@@ -108,6 +106,14 @@ class Parameter(AttachAbility):
         return self.getter()
 
     @property
+    def light_cysts(self):  # Light cysts in phantom
+        return self.getter()
+
+    @property
+    def dark_cysts(self):  # Dark cysts in phantom
+        return self.getter()
+
+    @property
     def dynamic_range(self):  # dB
         return self.getter()
 
@@ -117,24 +123,35 @@ class Parameter(AttachAbility):
 
     @property
     def phantom(self) -> typing.Tuple[np.ndarray, np.ndarray]:
-        try:
-            return self.getter()
-        except ValueError:
-            light_points_count = len(self.light_points)
-            assert light_points_count <= self.point_count
+        phantom = self.getter()
 
-            position = np.c_[
-                np.random.rand(self.point_count) * self.image_width - self.image_width / 2,
-                np.zeros(self.point_count),
-                np.random.rand(self.point_count) * self.z_size + self.z_start,
-            ]
+        if phantom is None:
+            x = np.random.rand(self.point_count) * self.image_width - self.image_width / 2
+            y = np.zeros(self.point_count)
+            z = np.random.rand(self.point_count) * self.z_size + self.z_start
             amplitude = np.random.rand(self.point_count)
 
-            position[0:light_points_count, :] = np.array(self.light_points)
-            amplitude[0:light_points_count] = 20
+            for light_cyst in self.light_cysts or []:
+                px, r, pz = light_cyst
+                inside = (x - px) ** 2 + (z - pz) ** 2 < r ** 2
+                amplitude[inside] *= 10
 
-            self.assign((position, amplitude))
-            return self.getter()
+            for dark_cyst in self.dark_cysts or []:
+                px, r, pz = dark_cyst
+                inside = (x - px) ** 2 + (z - pz) ** 2 < r ** 2
+                amplitude[inside] = 0
+
+            position = np.c_[x, y, z]
+            if self.light_points:
+                light_points_count = len(self.light_points)
+                assert light_points_count <= self.point_count
+
+                position[0:light_points_count, :] = np.array(self.light_points)
+                amplitude[0:light_points_count] = 20
+
+            phantom = (position, amplitude)
+            self.assign(phantom)
+        return phantom
 
     @property
     def c(self) -> float:  # Speed of Sound [m/s]
