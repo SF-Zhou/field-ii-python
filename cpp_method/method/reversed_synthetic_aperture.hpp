@@ -29,7 +29,7 @@ void reversed_synthetic_aperture(float* signals, float* image, const Para& para)
 
         ff (k, element_count) {
             const int center = (e + k) >> 1;
-            const int is_even = e + k - (center << 1) - 1;
+            const int is_even = (e & 1) == (k & 1);
             float *signal_line = signal_frame + k * data_length;
             const float hori_dis_sqr = sqr(e - k) * pixel_width_d_height_sqr_d_4;
 
@@ -43,13 +43,13 @@ void reversed_synthetic_aperture(float* signals, float* image, const Para& para)
                 const float A = pixel_width_d_height_sqr * b_sqr / total_dis_sqr;
                 const float A_2 = A + A;
 
-                float j_sqr = b_sqr;
-                float i_sqr = is_even ? A : 0.25 * A;
+                float j_sqr = b_sqr + (is_even - 1) * 0.25 * A;
+                float i_sqr = is_even * A;
 
                 int down = sqrt(j_sqr) - min_j;
                 image[down * line_count + center] += is_even ? v : 0;
 
-                int left = center + is_even, right = center + 1;
+                int left = center - is_even, right = center + 1;
 
                 const int max_l = sqrt((j_sqr - z_start_d_height_sqr - i_sqr) / A + 0.5) - 0.5;
                 const int times = min(max(left + 1, line_count - right), max_l);
@@ -61,8 +61,8 @@ void reversed_synthetic_aperture(float* signals, float* image, const Para& para)
                     const int down = sqrt(j_sqr) - min_j;
                     execute(assert(down >= 0));
 
-                    image[down * line_count + left] += v;
-                    image[down * line_count + right] += v;
+                    if (left >= 0) image[down * line_count + left] += v;
+                    if (right < line_count) image[down * line_count + right] += v;
                     left --, right ++;
                 }
             }
