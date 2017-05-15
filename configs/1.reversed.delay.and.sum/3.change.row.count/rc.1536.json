@@ -10,7 +10,7 @@
   "element_height": 4e-3,
   "kerf": 2.5e-05,
   "focus": [0.0, 0.0, 3.3e-2],
-  "row_count": 512,
+  "row_count": 1536,
   "dynamic_range": 30,
   "z_start": 5e-3,
   "z_size": 40e-3,
