@@ -1,5 +1,5 @@
 {
-  "save_path": "data/1.reversed.delay.and.sum/1.change.sampling.frequency/4e7Hz",
+  "speed_test": true,
   "worker": "MultiScat",
   "transducer_frequency": 5e6,
   "sampling_frequency": 4e7,

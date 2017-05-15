@@ -1,4 +1,5 @@
 {
+  "speed_test": true,
   "worker": "MultiScat",
   "transducer_frequency": 5e6,
   "sampling_frequency": 6e7,

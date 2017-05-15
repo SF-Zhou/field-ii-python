@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include <cmath>
+#include <ctime>
 #include <map>
 #include <chrono>
 #include <cassert>
@@ -16,7 +17,6 @@
 #include "method/reversed_synthetic_aperture.hpp"
 #include "method/RSA_deduction.hpp"
 #include "method/RSA_linear_approximation.hpp"
-#include "method/RSA_array_access.hpp"
 #include "method/RSA.hpp"
 using namespace std;
 
@@ -31,7 +31,6 @@ map<string, function<void (float*, float*, Para&)> > method_mapper = {
     key_value(reversed_synthetic_aperture),
     key_value(RSA_deduction),
     key_value(RSA_linear_approximation),
-    key_value(RSA_array_access),
     key_value(RSA)
 };
 
@@ -52,13 +51,18 @@ void measure_time(function<void (float*, float*, Para&)> method,
 }
 
 
-void read_signals(const string & in_file) {
-    int total_length = para.line_count * para.element_count * para.data_length;
-
+void read_signals(const string & in_file = "") {
+  if (in_file.length()) {
     FILE *f = fopen(in_file.c_str(), "rb");
-    int ret = fread(signals, sizeof(float), total_length, f);
-    assert(ret == total_length);
+    int ret = fread(signals, sizeof(float), para.total_length, f);
+    assert(ret == para.total_length);
     fclose(f);
+  } else {
+    srand(time(0));
+    ff (i, para.total_length) {
+      signals[i] = rand() * 80.0 / 81.0;
+    }
+  }
 }
 
 void write_image(const string & out_file) {
@@ -77,12 +81,14 @@ int main(int argc, char* argv[]) {
 
     // load input signals
     assert(args.has_method);
-    if (args.has_file) {
-        read_signals(args.signal_path);
-    } else if (para.signal_path.length()){
-        read_signals(para.signal_path);
+    if (para.speed_test) {
+      read_signals();  // empty signals for quick speed test
+    } else if (args.has_file) {
+      read_signals(args.signal_path);
+    } else if (para.signal_path.length()) {
+      read_signals(para.signal_path);
     } else {
-        std::cerr << "Input Data File Not Found!";
+      std::cerr << "Input Data File Not Found!";
     }
 
     // load method

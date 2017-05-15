@@ -9,9 +9,12 @@ using namespace std;
 using json = nlohmann::json;
 
 struct Para {
+    bool speed_test;
+
     int line_count;
     int row_count;
     int data_length;
+    int total_length;
     int element_count;
 
     float sampling_frequency;
@@ -40,6 +43,12 @@ struct Para {
           line_count = element_count;
         }
 
+        try {
+          speed_test = j.at("speed_test");
+        } catch (std::out_of_range) {
+          speed_test = false;
+        }
+
         sampling_frequency = j["sampling_frequency"];
         ratio = sampling_frequency / 1540;
         inv_ratio = 1 / ratio;
@@ -57,6 +66,8 @@ struct Para {
         }
         signal_path = save_path + "/signal";
         image_path = save_path + "/image";
+
+        total_length = line_count * element_count * data_length;
     }
 };
 #endif
