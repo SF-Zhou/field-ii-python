@@ -114,6 +114,10 @@ class Parameter(AttachAbility):
         return self.getter()
 
     @property
+    def just_light_cysts(self):
+        return self.getter()
+
+    @property
     def dynamic_range(self):  # dB
         return self.getter()
 
@@ -131,10 +135,12 @@ class Parameter(AttachAbility):
             z = np.random.rand(self.point_count) * self.z_size + self.z_start
             amplitude = np.random.rand(self.point_count)
 
+            total = np.ones(self.point_count, dtype=bool)
             for light_cyst in self.light_cysts or []:
                 px, r, pz = light_cyst
                 inside = (x - px) ** 2 + (z - pz) ** 2 < r ** 2
                 amplitude[inside] *= 10
+                total[inside] = False
 
             for dark_cyst in self.dark_cysts or []:
                 px, r, pz = dark_cyst
@@ -149,6 +155,10 @@ class Parameter(AttachAbility):
                 position[0:light_points_count, :] = np.array(self.light_points)
                 amplitude[0:light_points_count] = 20
 
+            if self.just_light_cysts:
+                amplitude[total] = 0
+            position = position[amplitude > 0]
+            amplitude = amplitude[amplitude > 0]
             phantom = (position, amplitude)
             self.assign(phantom)
         return phantom
