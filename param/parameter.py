@@ -191,10 +191,19 @@ class Parameter(AttachAbility):
     def active_count(self) -> int:
         return self.element_count - self.line_count + 1
 
+    @property
+    def config_path(self):
+        return self.getter()
+
+    @property
+    def speed_test(self):
+        return self.getter()
+
     def load(self, filename):
         if not os.path.exists(filename):
             raise FileNotFoundError("Not Found {}".format(filename))
 
+        self.assign(filename, 'config_path')
         with open(filename) as f:
             paras = json.load(f)
             if 'save_path' not in paras and filename[:8] == 'configs/':

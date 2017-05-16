@@ -10,8 +10,8 @@ class Runner:
         'RSA': 'reversed_synthetic_aperture'
     }
 
-    def __init__(self, target='measure'):
-        self.target = target
+    def __init__(self, is_measure=True):
+        self.target = 'measure' if is_measure else 'beamforming'
 
     @property
     def cpp_method_dir(self):
@@ -61,11 +61,11 @@ class Runner:
             else:
                 break
 
-        if p.returncode:
-            raise RuntimeError("Execution Return {}".format(p.returncode))
-
         result = self.Result()
         exec('\n'.join(lines), result.__dict__)
+        if p.returncode or not result.running_time:
+            raise RuntimeError("Execution Return {}".format(p.returncode))
+
         return result
 
     class Result:

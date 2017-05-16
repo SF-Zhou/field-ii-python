@@ -2,6 +2,8 @@
 .idea/
 .DS_Store
 data
+/device.json
+*.MacBookPro.res.json
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

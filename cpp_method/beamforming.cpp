@@ -98,6 +98,8 @@ int main(int argc, char* argv[]) {
     auto beamforming = method_mapper[args.method];
     measure_time(beamforming, args.method, args.times);
 
-    write_image(para.image_path + '.' + args.method);
+    if (!para.speed_test) {
+        write_image(para.image_path + '.' + args.method);
+    }
     return 0;
 }
