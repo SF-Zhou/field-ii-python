@@ -101,3 +101,22 @@ The final image data will be stored in **save_path** configured in config file, 
 python3 show.py configs/multi_scat.json delay_and_sum
 ```
 
+
+## Road Map
+
+### Result Organization
+
+1. Store in JSON
+2. Render
+
+### Quality Measurement Method
+
+1. Lateral Resolution Implementation
+2. Contrast Implementation
+3. SINE: Method Learning & Implementation
+
+### Experiments for Quality
+
+1. Simulation
+2. Run & Collect Result
+3. Render
