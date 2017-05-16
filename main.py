@@ -26,6 +26,7 @@ class Option:
     MethodMapper = {
         'DAS': 'delay_and_sum',
         'RDAS': 'reversed_method',
+        'ORDAS': 'optimized_reversed_method',
         'SA': 'synthetic_aperture',
         'RSA': 'reversed_synthetic_aperture'
     }
