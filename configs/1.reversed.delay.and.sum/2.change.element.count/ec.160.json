@@ -1,0 +1,28 @@
+{
+  "speed_test": true,
+  "worker": "MultiScat",
+  "transducer_frequency": 5e6,
+  "sampling_frequency": 4e7,
+  "data_length": 2048,
+  "element_count": 160,
+  "line_count": 80,
+  "element_width": 2.798e-4,
+  "element_height": 4e-3,
+  "kerf": 2.5e-05,
+  "focus": [0.0, 0.0, 3.3e-2],
+  "row_count": 1024,
+  "dynamic_range": 30,
+  "z_start": 5e-3,
+  "z_size": 40e-3,
+  "point_count": 5000,
+  "light_cysts": [
+    [6e-3, 4e-3, 12e-3],
+    [-6e-3, 4e-3, 22e-3],
+    [6e-3, 4e-3, 32e-3]
+  ],
+  "dark_cysts": [
+    [-6e-3, 4e-3, 12e-3],
+    [6e-3, 4e-3, 22e-3],
+    [-6e-3, 4e-3, 32e-3]
+  ]
+}
