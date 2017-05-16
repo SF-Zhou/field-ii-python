@@ -1,4 +1,5 @@
 {
+  "speed_test": true,
   "worker": "SyntheticAperture",
   "transducer_frequency": 5e6,
   "sampling_frequency": 4e7,
@@ -7,7 +8,7 @@
   "element_height": 4e-3,
   "kerf": 2.5e-05,
   "focus": [0.0, 0.0, 3.3e-2],
-  "row_count": 512,
+  "row_count": 256,
   "data_length": 2048,
   "dynamic_range": 20,
   "z_start": 5e-3,
