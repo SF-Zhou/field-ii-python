@@ -3,10 +3,8 @@ import st
 import sys
 import json
 import param
-import field
 import colored
 import hashlib
-import simulate
 import datetime
 import numpy as np
 from runner import Runner
@@ -50,7 +48,7 @@ class Option:
         self.device = ''
 
         if os.path.exists('device.json'):
-            with open('device.json', 'rb') as f:
+            with open('device.json', 'r') as f:
                 j = json.load(f)
                 self.device = j['name']
 
@@ -146,6 +144,9 @@ class Option:
 
     @staticmethod
     def simulation(para: param.Parameter):
+        import field
+        import simulate
+
         worker = getattr(simulate, para.worker + 'Worker', None)
         if worker is None:
             raise FileNotFoundError("Not Found {}Worker in simulate module".format(para.worker))
