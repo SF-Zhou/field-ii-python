@@ -27,9 +27,9 @@ void optimized_reversed_method(float* signals, float* image, const Para& para) {
     const float max_vert_dis_sqr_ratio = max_vert_dis_sqr / pixel_width_sqr;
 
     ff (i, para.line_count) {
-#ifndef MEASURE
-        printf("# Current Line: %d\n", i);
-#endif
+        execute(printf("# Current Emit: %d\n", i));
+        execute(fflush(stdout));
+
         float *signal_line = signals + i * para.element_count * para.data_length;
         float *image_line = image + i * para.row_count;
 

@@ -6,9 +6,8 @@ void synthetic_aperture(float* signals, float* image, const Para& para) {
     const int offset = (para.element_count - para.line_count) / 2;
 
     ff (e, para.line_count) {
-#ifndef MEASURE
-        printf("# Current Emit: %d\n", e);
-#endif
+        execute(printf("# Current Emit: %d\n", e));
+        execute(fflush(stdout));
 
         float *signal_line = signals + e * para.element_count * para.data_length;
 

@@ -6,6 +6,7 @@ void RSA(float* signals, float* image, const Para& para) {
 
   ff (l, para.element_count) {
     execute(printf("# Current Emit: %d\n", l));
+    execute(fflush(stdout));
     const float *signal_emit = signals + l * para.element_count * para.data_length;
 
     ff (k, para.element_count) {

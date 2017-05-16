@@ -25,6 +25,7 @@ void RSA_linear_approximation(float* signals, float* image, const Para& para) {
 
     ff (e, line_count) {
         execute(printf("# Current Emit: %d\n", e));
+        execute(fflush(stdout));
         float *signal_frame = signals + e * para.element_count * para.data_length;
 
         ff (k, element_count) {

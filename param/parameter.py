@@ -192,6 +192,9 @@ class Parameter(AttachAbility):
         return self.element_count - self.line_count + 1
 
     def load(self, filename):
+        if not os.path.exists(filename):
+            raise FileNotFoundError("Not Found {}".format(filename))
+
         with open(filename) as f:
             paras = json.load(f)
             if 'save_path' not in paras and filename[:8] == 'configs/':

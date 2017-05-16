@@ -47,7 +47,9 @@ void measure_time(function<void (float*, float*, Para&)> method,
     auto elapsed = chrono::high_resolution_clock::now() - start;
     long long microseconds = chrono::duration_cast<chrono::microseconds>(elapsed).count();
 
-    printf("%s running time: %.3f ms\n", title.c_str(), microseconds / 1000.0 / times);
+    printf("config_path = '%s'\n", args.config_path.c_str());
+    printf("method_name = '%s'\n", title.c_str());
+    printf("running_time = %.3f  # ms\n", microseconds / 1000.0 / times);
 }
 
 
@@ -88,7 +90,7 @@ int main(int argc, char* argv[]) {
     } else if (para.signal_path.length()) {
       read_signals(para.signal_path);
     } else {
-      std::cerr << "Input Data File Not Found!";
+      assert(args.has_file);
     }
 
     // load method

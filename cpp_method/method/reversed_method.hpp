@@ -10,9 +10,9 @@ void reversed_method(float* signals, float* image, const Para& para) {
     const float B = sqr(para.pixel_width) * para.ratio / para.pixel_height / 2;
 
     ff (i, para.line_count) {
-#ifndef MEASURE
-        printf("# Current Line: %d\n", i);
-#endif
+        execute(printf("# Current Emit: %d\n", i));
+        execute(fflush(stdout));
+
         float *signal_line = signals + i * para.element_count * para.data_length;
         float *image_line = image + i * para.row_count;
 
