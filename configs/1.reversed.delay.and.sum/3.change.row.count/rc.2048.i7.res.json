@@ -2,14 +2,18 @@
   "results": [
     {
       "name": "delay_and_sum",
-      "time": 203.402
+      "time": 204.421
     },
     {
       "name": "reversed_method",
-      "time": 78.036
+      "time": 78.973
+    },
+    {
+      "name": "optimized_reversed_method",
+      "time": 75.398
     }
   ],
-  "time": "2017-05-16 15:31:00.009478",
-  "times": 100,
-  "version": "2ffbb0f6dd05e7c47b86176e3a23450d"
+  "time": "2017-05-16 17:17:05.612720",
+  "version": "2ffbb0f6dd05e7c47b86176e3a23450d",
+  "times": 100
 }
