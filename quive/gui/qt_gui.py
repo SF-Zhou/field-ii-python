@@ -1,7 +1,10 @@
+from ..core import *
+from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 
-
-__saved__ = []
+__save__ = []
 # noinspection PyArgumentList
 if not QApplication.instance():
-    __saved__.append(QApplication([]))
+    __save__.append(QApplication([]))
+Signal = pyqtSignal
+assert QPainter == QPainter

@@ -11,7 +11,7 @@ class WidgetStringInterface(AttachAbility):
 
     @property
     def string_item(self) -> StringItem:
-        return self.create(type(self).StringItem, args=(self, ))
+        return self.attach(type(self).StringItem, args=(self,))
 
     @property
     def string(self) -> StringProperty:
@@ -36,7 +36,7 @@ class WidgetIndexInterface(AttachAbility):
 
     @property
     def index_item(self) -> IndexItem:
-        return self.create(type(self).IndexItem, args=(self, ))
+        return self.attach(type(self).IndexItem, args=(self,))
 
     @property
     def index(self) -> IntProperty:
@@ -53,7 +53,7 @@ class WidgetStringListInterface(AttachAbility):
 
     @property
     def strings_item(self) -> StringsItem:
-        return self.create(type(self).StringsItem, args=(self, ))
+        return self.attach(type(self).StringsItem, args=(self,))
 
     @property
     def string_list(self) -> StringListProperty:

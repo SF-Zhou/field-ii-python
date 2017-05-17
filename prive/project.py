@@ -33,7 +33,7 @@ class SaveInterface(ValueModel):
 
 class AbstractProject(DictValueModel, SaveInterface, ChangedInterface):
     def get_value(self) -> dict:
-        return self.create(dict)
+        return self.attach(dict)
 
     def set_value(self, value):
         self.value.clear()
@@ -50,7 +50,7 @@ class AbstractProject(DictValueModel, SaveInterface, ChangedInterface):
     # children property
     @property
     def children(self) -> typing.List['AbstractProjectItem']:
-        return self.create(list)
+        return self.attach(list)
 
     # name property
     def __setattr__(self, key: str, value):
@@ -80,7 +80,7 @@ class AbstractProjectItem(StringItemInterface):
 
     @property
     def name(self) -> str:
-        return self.create(str)
+        return self.attach(str)
 
     @name.setter
     def name(self, value):
@@ -88,7 +88,7 @@ class AbstractProjectItem(StringItemInterface):
 
     @property
     def self_storage(self):
-        return self.create(lambda: None)
+        return self.attach(lambda: None)
 
     @self_storage.setter
     def self_storage(self, value):

@@ -25,7 +25,7 @@ class ValueModel:
 class AttachAbility(ValueModel):
     AttachFlag = '_attach_{}'
 
-    def create(self, creator, args: tuple=(),
+    def attach(self, creator, args: tuple=(),
                finished_with: typing.Callable[[], object]=None):
         name = self.AttachFlag.format(self.current_name)
 
@@ -53,7 +53,7 @@ class ValueInterface(ValueModel):
 class ChangedInterface(AttachAbility):
     @property
     def changed(self) -> SignalSender:
-        return self.create(SignalSender, finished_with=self.set_changed_connection)
+        return self.attach(SignalSender, finished_with=self.set_changed_connection)
 
     # noinspection PyUnresolvedReferences
     def check_change(self, *_):

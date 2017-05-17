@@ -19,7 +19,7 @@ class StringProperty(AbstractProperty, StringValueModel):
 class StringItemInterface(AbstractItem):
     @property
     def string(self) -> StringProperty:
-        return self.create(StringProperty, args=(self, ))
+        return self.attach(StringProperty, args=(self,))
 
 
 class StringItem(StringItemInterface):
@@ -43,7 +43,7 @@ class IntProperty(AbstractProperty, IntValueModel):
 class IntItemInterface(AbstractItem):
     @property
     def int(self) -> IntProperty:
-        return self.create(IntProperty, args=(self, ))
+        return self.attach(IntProperty, args=(self,))
 
 
 class IntItem(IntItemInterface):
@@ -67,7 +67,7 @@ class FloatProperty(AbstractProperty, FloatValueModel):
 class FloatItemInterface(AbstractItem):
     @property
     def float(self) -> FloatProperty:
-        return self.create(FloatProperty, args=(self, ))
+        return self.attach(FloatProperty, args=(self,))
 
 
 class FloatItem(FloatItemInterface):
@@ -91,7 +91,7 @@ class DictProperty(AbstractProperty, DictValueModel):
 class DictItemInterface(AbstractItem):
     @property
     def dict(self) -> DictProperty:
-        return self.create(DictProperty, args=(self, ))
+        return self.attach(DictProperty, args=(self,))
 
 
 class DictItem(DictItemInterface):
@@ -115,7 +115,7 @@ class ListProperty(AbstractProperty, ListValueModel):
 class ListItemInterface(AbstractItem):
     @property
     def list(self) -> ListProperty:
-        return self.create(ListProperty, args=(self, ))
+        return self.attach(ListProperty, args=(self,))
 
 
 class ListItem(ListItemInterface):
@@ -143,7 +143,7 @@ class StringListProperty(AbstractProperty, StringListValueModel):
 class StringListItemInterface(AbstractItem):
     @property
     def string_list(self) -> StringListProperty:
-        return self.create(StringListProperty, args=(self, ))
+        return self.attach(StringListProperty, args=(self,))
 
 
 class StringListItem(StringListItemInterface):
@@ -161,7 +161,7 @@ class StringIntProperty(IntProperty):
 class StringIntItemInterface(StringItemInterface):
     @property
     def int(self) -> StringIntProperty:
-        return self.create(StringIntProperty, args=(self, ))
+        return self.attach(StringIntProperty, args=(self,))
 
 
 class StringFloatProperty(FloatProperty):
@@ -175,4 +175,4 @@ class StringFloatProperty(FloatProperty):
 class StringFloatItemInterface(StringItemInterface):
     @property
     def float(self) -> StringFloatProperty:
-        return self.create(StringFloatProperty, args=(self, ))
+        return self.attach(StringFloatProperty, args=(self,))
