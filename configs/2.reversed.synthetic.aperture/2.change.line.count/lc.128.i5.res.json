@@ -1,0 +1,15 @@
+{
+  "times": 20,
+  "results": [
+    {
+      "name": "synthetic_aperture",
+      "time": 8752.268
+    },
+    {
+      "name": "reversed_synthetic_aperture",
+      "time": 5409.614
+    }
+  ],
+  "time": "2017-05-17 08:21:22.398605",
+  "version": "a1eacd3d0f146ef62656f0c599c6ef73"
+}
