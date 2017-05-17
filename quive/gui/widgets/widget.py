@@ -12,9 +12,14 @@ class Widget(QWidget, ClosedSignalInterface, ClassExecInterface, ContainerAbilit
         self.closed.emit()
         event.accept()
 
+    def exec(self):
+        with EventLoop() as loop:
+            self.closed.connect(loop.quit)
+            self.show()
+
     @property
     def background_color(self):
-        return self.create(lambda: None)
+        return self.attach(lambda: None)
 
     @background_color.setter
     def background_color(self, value):
