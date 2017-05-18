@@ -69,6 +69,10 @@ class Option:
     def is_view(self):
         return 'v' in self.command
 
+    @property
+    def not_show(self):
+        return 'n' in self.command
+
     def process_args(self):
         assert len(self.args), 'Args has to be set'
 
@@ -110,11 +114,16 @@ class Option:
             para = param.Parameter()
             para.load(config_path)
 
+            if self.methods:
+                methods = self.methods
+            elif para.methods:
+                methods = [self.MethodMapper.get(method, method) for method in para.methods]
+
             if self.is_simulation:
                 self.simulation(para)
 
             if self.is_calculation:
-                self.calculation(para, self.methods, self.times, self.is_measure)
+                self.calculation(para, methods, self.times, self.is_measure)
 
             if self.is_measure:
                 if not self.device:
@@ -133,7 +142,7 @@ class Option:
                                 need_calculation = False
 
                 if need_calculation:
-                    results = self.calculation(para, self.methods, self.times, self.is_measure)
+                    results = self.calculation(para, methods, self.times, self.is_measure)
 
                     final = {
                         "version": current_version,
@@ -146,7 +155,7 @@ class Option:
                         json.dump(final, f, indent=2)
 
             if self.is_view:
-                self.view(para, self.methods)
+                self.view(para, methods, not self.not_show)
 
             print()
 
@@ -159,7 +168,8 @@ class Option:
         if worker is None:
             raise FileNotFoundError("Not Found {}Worker in simulate module".format(para.worker))
 
-        engine_count = 1 if para.worker.endswith("SyntheticAperture") else 4
+        total = len(field.engine_pool.engines)
+        engine_count = 1 if para.worker.endswith("SyntheticAperture") else total
         pool = field.MatlabPool(engine_count=engine_count)
         task = list(range(para.line_count))
 
@@ -187,7 +197,7 @@ class Option:
         return results
 
     @staticmethod
-    def view(para: param.Parameter, methods: list):
+    def view(para: param.Parameter, methods: list, show: bool = True):
         import image
         import quive
         import widgets
@@ -195,29 +205,56 @@ class Option:
         if not methods:
             raise SyntaxError('Methods Not Found')
 
-        with quive.EventLoop() as loop:
-            for method in methods:
-                image_path = para.image_path + '.' + method
+        stored_widgets = []
+        for method in methods:
+            Option.output_tip('Current Method: {}'.format(method))
 
-                if not os.path.exists(image_path):
-                    raise FileNotFoundError("Not Found {}".format(image_path))
+            image_path = para.image_path + '.' + method
 
-                raw_image = np.fromfile(image_path, dtype=np.float32)
-                if method == 'reversed_synthetic_aperture':
-                    raw_image.shape = para.row_count, para.line_count
-                    raw_image = raw_image.T
-                else:
-                    raw_image.shape = para.line_count, para.row_count
+            if not os.path.exists(image_path):
+                raise FileNotFoundError("Not Found {}".format(image_path))
 
-                decibel = image.convert_to_decibel(raw_image)
-                pixel = image.convert_to_pixel(decibel, para.dynamic_range)
-                u_image = image.UImage(pixel, para.image_size, para.z_start * 1000)
+            raw_image = np.fromfile(image_path, dtype=np.float32)
+            if method == 'reversed_synthetic_aperture':
+                raw_image.shape = para.row_count, para.line_count
+                raw_image = raw_image.T
+            else:
+                raw_image.shape = para.line_count, para.row_count
 
-                w = widgets.ImageWidget()
-                w.u_image = u_image
-                w.setWindowTitle('{} {}'.format(para.config_path, method))
-                w.show()
-                w.closed.connect(loop.quit)
+            decibel = image.convert_to_decibel(raw_image)
+            pixel = image.convert_to_pixel(decibel, para.dynamic_range)
+            u_image = image.UImage(pixel, para.image_size, para.z_start * 1000)
+
+            w = widgets.ImageWidget()
+            w.u_image = u_image
+            w.setWindowTitle('{} {}'.format(para.config_path, method))
+            stored_widgets.append(w)
+
+            if para.lateral_test:
+                row, column = decibel.shape
+                position = np.argmax(decibel)
+                line_idx = position // column
+                line = decibel[line_idx, :].flatten()
+
+                # noinspection PyTypeChecker
+                first = np.argmax(line >= -6)
+                offset = 0
+                if line[first] != -6:
+                    offset = (line[first] - (-6)) / (line[first] - line[first - 1])
+                line = line[first:]
+
+                # noinspection PyTypeChecker
+                second = np.argmax(line <= -6)
+                if line[second] != -6:
+                    offset += (line[second - 1] - (-6)) / (line[second - 1] - line[second])
+                value = (second + offset) * para.pixel_width * 1000
+                print('Lateral Resolution: {:.4f} mm'.format(value))
+
+        if show:
+            with quive.EventLoop() as loop:
+                for w in stored_widgets:
+                    w.closed.connect(loop.quit)
+                    w.show()
 
     @staticmethod
     def output_tip(tip):

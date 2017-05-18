@@ -200,7 +200,15 @@ class Parameter(AttachAbility):
         return self.getter()
 
     @property
+    def methods(self):
+        return self.getter()
+
+    @property
     def speed_test(self):
+        return self.getter()
+
+    @property
+    def lateral_test(self):
         return self.getter()
 
     def load(self, filename):
