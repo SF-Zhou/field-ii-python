@@ -1,0 +1,8 @@
+{
+  "time": "2017-05-18 23:00:13.228919",
+  "results": {
+    "delay_and_sum": 1.280605891726922,
+    "reversed_method": 1.2742571069080009,
+    "optimized_reversed_method": 1.2742571069080009
+  }
+}

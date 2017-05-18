@@ -1,0 +1,32 @@
+{
+  "worker": "SyntheticAperture",
+  "transducer_frequency": 5000000.0,
+  "sampling_frequency": 40000000.0,
+  "element_count": 192,
+  "element_width": 0.0002798,
+  "element_height": 0.004,
+  "kerf": 2.5e-05,
+  "focus": [
+    0.0,
+    0.0,
+    0.025
+  ],
+  "row_count": 1024,
+  "data_length": 2048,
+  "dynamic_range": 20,
+  "z_start": 0.005,
+  "z_size": 0.04,
+  "point_count": 1,
+  "light_points": [
+    [
+      0,
+      0.0,
+      0.025
+    ]
+  ],
+  "methods": [
+    "SA",
+    "RSA"
+  ],
+  "lateral_test": true
+}
