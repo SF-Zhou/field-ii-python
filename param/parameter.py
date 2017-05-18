@@ -180,6 +180,10 @@ class Parameter(AttachAbility):
         return self.z_size
 
     @property
+    def image_size(self) -> typing.Tuple[float, float]:  # image size, mm
+        return self.image_width * 1000, self.image_height * 1000
+
+    @property
     def pixel_width(self) -> float:
         return self.element_width + self.kerf
 

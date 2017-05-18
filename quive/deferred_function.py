@@ -54,6 +54,8 @@ def export_to_pdf(self: Widget, filename: str):
     printer = QPrinter()
     printer.setOutputFormat(QPrinter.PdfFormat)
     printer.setOutputFileName(filename)
+    printer.setPageMargins(0, 0, 0, 0, QPrinter.Point)
+    printer.setPaperSize(QSizeF(*self.size), QPrinter.Point)
 
     painter = QPainter()
     ok = painter.begin(printer)

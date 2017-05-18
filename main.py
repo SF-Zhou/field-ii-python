@@ -65,6 +65,10 @@ class Option:
     def is_measure(self):
         return 'm' in self.command
 
+    @property
+    def is_view(self):
+        return 'v' in self.command
+
     def process_args(self):
         assert len(self.args), 'Args has to be set'
 
@@ -141,6 +145,9 @@ class Option:
                     with open(result_path, 'w') as f:
                         json.dump(final, f, indent=2)
 
+            if self.is_view:
+                self.view(para, self.methods)
+
             print()
 
     @staticmethod
@@ -178,6 +185,39 @@ class Option:
                 "time": result.running_time
             })
         return results
+
+    @staticmethod
+    def view(para: param.Parameter, methods: list):
+        import image
+        import quive
+        import widgets
+
+        if not methods:
+            raise SyntaxError('Methods Not Found')
+
+        with quive.EventLoop() as loop:
+            for method in methods:
+                image_path = para.image_path + '.' + method
+
+                if not os.path.exists(image_path):
+                    raise FileNotFoundError("Not Found {}".format(image_path))
+
+                raw_image = np.fromfile(image_path, dtype=np.float32)
+                if method == 'reversed_synthetic_aperture':
+                    raw_image.shape = para.row_count, para.line_count
+                    raw_image = raw_image.T
+                else:
+                    raw_image.shape = para.line_count, para.row_count
+
+                decibel = image.convert_to_decibel(raw_image)
+                pixel = image.convert_to_pixel(decibel, para.dynamic_range)
+                u_image = image.UImage(pixel, para.image_size, para.z_start * 1000)
+
+                w = widgets.ImageWidget()
+                w.u_image = u_image
+                w.setWindowTitle('{} {}'.format(para.config_path, method))
+                w.show()
+                w.closed.connect(loop.quit)
 
     @staticmethod
     def output_tip(tip):
