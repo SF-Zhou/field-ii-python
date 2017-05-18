@@ -206,6 +206,8 @@ class Option:
             raise SyntaxError('Methods Not Found')
 
         stored_widgets = []
+        lateral_results = {}
+
         for method in methods:
             Option.output_tip('Current Method: {}'.format(method))
 
@@ -248,7 +250,25 @@ class Option:
                 if line[second] != -6:
                     offset += (line[second - 1] - (-6)) / (line[second - 1] - line[second])
                 value = (second + offset) * para.pixel_width * 1000
+                lateral_results[method] = value
                 print('Lateral Resolution: {:.4f} mm'.format(value))
+
+        if lateral_results:
+            result_path = '{}.lateral.res.json'.format(para.config_path[:-5])
+            final = {
+                "time": str(datetime.datetime.now()),
+                "results": lateral_results
+            }
+
+            need_write = True
+            if os.path.exists(result_path):
+                with open(result_path) as f:
+                    current = json.load(f)
+                need_write = current['results'] != lateral_results
+
+            if need_write:
+                with open(result_path, 'w') as f:
+                    json.dump(final, f, indent=2)
 
         if show:
             with quive.EventLoop() as loop:

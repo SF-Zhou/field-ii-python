@@ -17,6 +17,6 @@
   "light_points": [
     [0, 0e-3, 2.5e-2]
   ],
-  "methods": ["DAS", "RDAS"],
+  "methods": ["DAS", "RDAS", "ORDAS"],
   "lateral_test": true
 }

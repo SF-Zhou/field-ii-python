@@ -41,9 +41,8 @@ void optimized_reversed_method(float* signals, float* image, const Para& para) {
             float *current_signal = signal_line + k * para.data_length + min_d;
 
             fff(d, min_d, max_d) {
-                ++current_signal;
                 const int j = A * d - B * C / d - empty_j;
-                image_line[j] += *current_signal;
+                image_line[j] += *current_signal ++;
             }
         }
     }
