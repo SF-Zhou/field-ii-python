@@ -66,10 +66,6 @@ class Parameter(AttachAbility):
         return self.getter()
 
     @property
-    def active_count(self) -> int:  # Number of active elements
-        return self.getter()
-
-    @property
     def kerf(self) -> int:  # [m]
         return self.getter()
 
@@ -80,6 +76,10 @@ class Parameter(AttachAbility):
     @property
     def line_count(self) -> int:  # Number of lines in image
         return self.getter()
+
+    @property
+    def total_element_count(self) -> int:
+        return self.element_count + self.line_count - 1
 
     @property
     def row_count(self) -> int:  # Number of rows in image

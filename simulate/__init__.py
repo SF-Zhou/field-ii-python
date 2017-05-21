@@ -3,3 +3,5 @@ from .multi_scat_worker import MultiScatWorker
 from .simple_worker import SimpleWorker
 from .synthetic_aperture import SyntheticApertureWorker
 from .fast_synthetic_aperture import FastSyntheticApertureWorker
+
+from .delay_and_sum_worker import DelayAndSumWorker

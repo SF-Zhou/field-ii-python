@@ -18,6 +18,7 @@
 #include "method/RSA_deduction.hpp"
 #include "method/RSA_linear_approximation.hpp"
 #include "method/RSA.hpp"
+#include "method/NDAS.hpp"
 using namespace std;
 
 #define key_value(m) {#m, m}
@@ -31,7 +32,8 @@ map<string, function<void (float*, float*, Para&)> > method_mapper = {
     key_value(reversed_synthetic_aperture),
     key_value(RSA_deduction),
     key_value(RSA_linear_approximation),
-    key_value(RSA)
+    key_value(RSA),
+    key_value(NDAS)
 };
 
 float signals[4096 * 256 * 256 + 64];
