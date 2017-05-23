@@ -21,7 +21,7 @@ void NRDAS(float* signals, float* image, const Para& para) {
             const float C = sqr(k - para.element_count / 2 + 0.5);
 
             fff(d, min_delay + 1, para.data_length - 1) {
-                const int j = A * d - B * C / d - empty_j;
+                const int j = A * d - B * C / d - empty_j + 0.5;
                 ++ current_signal;
                 if (0 <= j && j < para.row_count) {
                     image_line[j] += *current_signal;

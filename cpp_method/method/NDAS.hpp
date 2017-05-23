@@ -20,7 +20,7 @@ void NDAS(float* signals, float* image, const Para& para) {
                         vertical_distance * vertical_distance + horizontal_distance * horizontal_distance
                 );
 
-                int idx = int(total_distance * para.ratio);
+                int idx = int(total_distance * para.ratio + 0.5);
 
                 if (0 <= idx && idx < para.data_length) {
                     image[image_idx] += signal_line[k * para.data_length + idx];

@@ -1,5 +1,5 @@
 {
-  "worker": "MultiScat",
+  "worker": "DelayAndSum",
   "transducer_frequency": 5e6,
   "sampling_frequency": 4e7,
   "data_length": 2500,
@@ -17,6 +17,6 @@
   "light_points": [
     [0, 0e-3, 4.5e-2]
   ],
-  "methods": ["DAS", "RDAS", "ORDAS"],
+  "methods": ["NDAS", "NRDAS"],
   "lateral_test": true
 }
