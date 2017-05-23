@@ -207,6 +207,7 @@ class Option:
 
         stored_widgets = []
         lateral_results = {}
+        contrast_results = {}
 
         for method in methods:
             Option.output_tip('Current Method: {}'.format(method))
@@ -265,24 +266,30 @@ class Option:
 
                 s_out = pixel[(abs(xv) - (r + 1e-3) * 2) ** 2 + (zv - z) ** 2 < r * r].mean()
                 contrast = (s_out - s_in) / s_out
+                contrast_results[method] = contrast
                 print('Contrast: {:.4f}'.format(contrast))
 
-        if lateral_results:
-            result_path = '{}.lateral.res.json'.format(para.config_path[:-5])
+        def write_result(name, results):
+            result_path = '{}.{}.res.json'.format(para.config_path[:-5], name)
             final = {
                 "time": str(datetime.datetime.now()),
-                "results": lateral_results
+                "results": results
             }
 
             need_write = True
             if os.path.exists(result_path):
                 with open(result_path) as f:
                     current = json.load(f)
-                need_write = current['results'] != lateral_results
+                need_write = current['results'] != results
 
             if need_write:
                 with open(result_path, 'w') as f:
                     json.dump(final, f, indent=2)
+
+        if lateral_results:
+            write_result('lateral', lateral_results)
+        if contrast_results:
+            write_result('contrast', contrast_results)
 
         if show:
             with quive.EventLoop() as loop:

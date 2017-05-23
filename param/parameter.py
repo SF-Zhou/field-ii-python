@@ -131,7 +131,7 @@ class Parameter(AttachAbility):
 
         if phantom is None:
             x = np.random.rand(self.point_count) * self.image_width - self.image_width / 2
-            y = np.zeros(self.point_count)
+            y = (np.random.rand(self.point_count) - 0.5) * self.image_thickness
             z = np.random.rand(self.point_count) * self.z_size + self.z_start
             amplitude = np.random.rand(self.point_count)
 
@@ -178,6 +178,10 @@ class Parameter(AttachAbility):
     @property
     def image_height(self) -> float:  # Height of image sector
         return self.z_size
+
+    @property
+    def image_thickness(self) -> float:  # Thickness of image sector
+        return 1e-3
 
     @property
     def image_size(self) -> typing.Tuple[float, float]:  # image size, mm
