@@ -211,6 +211,10 @@ class Parameter(AttachAbility):
     def lateral_test(self):
         return self.getter()
 
+    @property
+    def contrast_test(self):
+        return self.getter()
+
     def load(self, filename):
         if not os.path.exists(filename):
             raise FileNotFoundError("Not Found {}".format(filename))

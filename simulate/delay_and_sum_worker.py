@@ -14,7 +14,7 @@ class DelayAndSumWorker(field.MatlabWorker):
         self.e.field_init()
         self.e.set_sampling(para.sampling_frequency)
 
-        emit_aperture = self.e.xdc_linear_array(para.total_element_count,
+        emit_aperture = self.e.xdc_linear_array(para.element_count,
                                                 para.element_width,
                                                 para.element_height,
                                                 para.kerf, 1, 5, para.focus)
@@ -25,12 +25,12 @@ class DelayAndSumWorker(field.MatlabWorker):
         self.e.xdc_impulse(emit_aperture, impulse_response)
         self.e.xdc_excitation(emit_aperture, excitation)
 
-        receive_aperture = self.e.xdc_linear_array(para.total_element_count,
+        receive_aperture = self.e.xdc_linear_array(para.element_count,
                                                    para.element_width,
                                                    para.element_height,
                                                    para.kerf, 1, 5, para.focus)
         self.e.xdc_impulse(receive_aperture, impulse_response)
-        self.e.xdc_focus_times(receive_aperture, [0], np.zeros(para.total_element_count))
+        self.e.xdc_focus_times(receive_aperture, [0], np.zeros(para.element_count))
 
         phantom_positions, phantom_amplitudes = para.phantom
 
@@ -38,21 +38,22 @@ class DelayAndSumWorker(field.MatlabWorker):
         for i in self.task:
             print("calculate line {}".format(i))
             x = (i - para.line_count / 2 + 1 / 2) * para.pixel_width
+            positions = np.array(phantom_positions)
+            positions[:, 0] -= x
 
             # set the focus for this direction
-            self.e.xdc_center_focus(emit_aperture, [x, 0, 0])
-            self.e.xdc_focus(emit_aperture, [0], [x, 0, para.z_focus])
-            # self.e.xdc_apodization(emit_aperture, [0], np.ones(para.total_element_count))
+            self.e.xdc_center_focus(emit_aperture, [0, 0, 0])
+            self.e.xdc_focus(emit_aperture, [0], [0, 0, para.z_focus])
 
             # set the active elements using the apodization
-            apo_vector = np.zeros(para.total_element_count)
-            apo_vector[i:i + para.element_count] = np.hamming(para.element_count)
-            self.e.xdc_apodization(receive_aperture, [0], apo_vector)
+            self.e.xdc_apodization(emit_aperture, [0], np.hamming(para.element_count))
+            self.e.xdc_apodization(receive_aperture, [0], np.hamming(para.element_count))
 
             rf_data = self.e.scat_multi(emit_aperture, receive_aperture,
-                                        phantom_positions, phantom_amplitudes,
+                                        positions, phantom_amplitudes,
                                         para.sampling_frequency, para.data_length)
-            result.append(rf_data[i:i + para.element_count, :])
+
+            result.append(rf_data)
         self.e.xdc_free(emit_aperture)
         self.e.xdc_free(receive_aperture)
         return result

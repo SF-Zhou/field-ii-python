@@ -253,6 +253,20 @@ class Option:
                 lateral_results[method] = value
                 print('Lateral Resolution: {:.4f} mm'.format(value))
 
+            if para.contrast_test:
+                cyst = para.dark_cysts[0]
+                x, r, z = cyst
+                assert x == 0
+
+                px = np.linspace(-0.5, 0.5, para.line_count) * (para.image_width - para.pixel_width)
+                py = np.arange(para.row_count) * para.pixel_height + para.z_start
+                xv, zv = np.meshgrid(px, py)
+                s_in = pixel[xv ** 2 + (zv - z) ** 2 < r * r].mean()
+
+                s_out = pixel[(abs(xv) - (r + 1e-3) * 2) ** 2 + (zv - z) ** 2 < r * r].mean()
+                contrast = (s_out - s_in) / s_out
+                print('Contrast: {:.4f}'.format(contrast))
+
         if lateral_results:
             result_path = '{}.lateral.res.json'.format(para.config_path[:-5])
             final = {
