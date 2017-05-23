@@ -264,7 +264,7 @@ class Option:
                 xv, zv = np.meshgrid(px, py)
                 s_in = pixel[xv ** 2 + (zv - z) ** 2 < r * r].mean()
 
-                s_out = pixel[(abs(xv) - (r + 1e-3) * 2) ** 2 + (zv - z) ** 2 < r * r].mean()
+                s_out = pixel[(abs(xv) - (r * 2 + 1e-3)) ** 2 + (zv - z) ** 2 < r * r].mean()
                 contrast = (s_out - s_in) / s_out
                 contrast_results[method] = contrast
                 print('Contrast: {:.4f}'.format(contrast))

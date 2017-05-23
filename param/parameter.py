@@ -130,7 +130,7 @@ class Parameter(AttachAbility):
         phantom = self.getter()
 
         if phantom is None:
-            x = np.random.rand(self.point_count) * self.image_width - self.image_width / 2
+            x = (np.random.rand(self.point_count) - 0.5) * self.scatter_width
             y = (np.random.rand(self.point_count) - 0.5) * self.image_thickness
             z = np.random.rand(self.point_count) * self.z_size + self.z_start
             amplitude = np.random.rand(self.point_count)
@@ -170,6 +170,10 @@ class Parameter(AttachAbility):
     @property
     def wave_length(self):  # [m]
         return self.c / self.transducer_frequency
+
+    @property
+    def scatter_width(self):
+        return self.getter() or self.image_width
 
     @property
     def image_width(self) -> float:  # Width of image sector
