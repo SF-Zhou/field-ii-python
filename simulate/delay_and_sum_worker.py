@@ -20,7 +20,7 @@ class DelayAndSumWorker(field.MatlabWorker):
                                                 para.kerf, 1, 5, para.focus)
 
         excitation = np.sin(2 * np.pi * para.transducer_frequency * np.arange(
-            0, 1 / para.transducer_frequency, 1 / para.sampling_frequency))
+            0, 2 / para.transducer_frequency, 1 / para.sampling_frequency))
         impulse_response = excitation * np.hanning(excitation.size)
         self.e.xdc_impulse(emit_aperture, impulse_response)
         self.e.xdc_excitation(emit_aperture, excitation)

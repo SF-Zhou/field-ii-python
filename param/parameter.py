@@ -126,14 +126,31 @@ class Parameter(AttachAbility):
         return self.getter()
 
     @property
+    def from_image(self):
+        return self.getter()
+
+    @property
     def phantom(self) -> typing.Tuple[np.ndarray, np.ndarray]:
         phantom = self.getter()
 
         if phantom is None:
-            x = (np.random.rand(self.point_count) - 0.5) * self.scatter_width
-            y = (np.random.rand(self.point_count) - 0.5) * self.image_thickness
-            z = np.random.rand(self.point_count) * self.z_size + self.z_start
+            x0 = np.random.rand(self.point_count)
+            y0 = np.random.rand(self.point_count)
+            z0 = np.random.rand(self.point_count)
+
+            x = (x0 - 0.5) * self.scatter_width
+            y = (y0 - 0.5) * self.image_thickness
+            z = z0 * self.z_size + self.z_start
             amplitude = np.random.rand(self.point_count)
+
+            if self.from_image:
+                from PIL import Image
+                im = Image.open(os.path.join(os.path.dirname(self.config_path), self.from_image))
+                im_arr = np.array(im.convert('L'))
+                h, w = im_arr.shape
+                ph = np.array(z0 * h, dtype=np.int)
+                pw = np.array(x0 * w, dtype=np.int)
+                amplitude *= im_arr[ph, pw]
 
             total = np.ones(self.point_count, dtype=bool)
             for light_cyst in self.light_cysts or []:

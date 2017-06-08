@@ -1,0 +1,18 @@
+{
+  "worker": "SyntheticAperture",
+  "transducer_frequency": 5e6,
+  "sampling_frequency": 4e7,
+  "element_count": 256,
+  "element_width": 2.798e-4,
+  "element_height": 4e-3,
+  "kerf": 2.5e-05,
+  "focus": [0.0, 0.0, 4.5e-2],
+  "row_count": 1024,
+  "data_length": 4096,
+  "dynamic_range": 40,
+  "z_start": 20e-3,
+  "z_size": 60e-3,
+  "point_count": 200000,
+  "from_image": "fetus.bmp",
+  "methods": ["SA", "RSA"]
+}
