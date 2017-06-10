@@ -55,7 +55,7 @@ class ImageWidget(Widget):
             h = expected_h
 
         half_image_width = image_width / 2
-        for x in np.arange(0, half_image_width + 1e-5, 5):
+        for x in np.arange(0, half_image_width + 1e-5, 10):
             percent = (half_image_width + x) / image_width
 
             painter.drawLine(PointF(w * percent, 0), PointF(w * percent, -4))
@@ -68,7 +68,7 @@ class ImageWidget(Widget):
                                   margin=5, background_color=Qt.white)
 
         z_start = self.u_image.z_start
-        for y in np.arange(0, image_height + 1e-5, 5):
+        for y in np.arange(0, image_height + 1e-5, 10):
             percent = y / image_height
 
             painter.drawLine(PointF(0, h * percent), PointF(-4, h * percent))

@@ -11,7 +11,7 @@
   "data_length": 4096,
   "dynamic_range": 40,
   "z_start": 20e-3,
-  "z_size": 60e-3,
+  "z_size": 55e-3,
   "point_count": 200000,
   "from_image": "fetus.bmp",
   "methods": ["SA", "RSA"]

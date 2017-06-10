@@ -10,9 +10,9 @@
   "kerf": 2.5e-05,
   "focus": [0.0, 0.0, 4.5e-2],
   "row_count": 1024,
-  "dynamic_range": 30,
+  "dynamic_range": 40,
   "z_start": 20e-3,
-  "z_size": 60e-3,
+  "z_size": 55e-3,
   "point_count": 200000,
   "from_image": "fetus.bmp",
   "methods": ["NDAS", "NRDAS"]
