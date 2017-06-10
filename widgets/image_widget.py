@@ -14,6 +14,9 @@ class ImageWidget(Widget):
         self.short_cut = Shortcut('ctrl+w', self)
         self.short_cut.excited.connect(self.close)
 
+        self.need_show = True
+        self.path = ''
+
     @property
     def u_image(self) -> image.UImage:
         return self.attach(lambda: None)
@@ -77,4 +80,15 @@ class ImageWidget(Widget):
 
         painter.drawLine(PointF(0, 0), PointF(0, h))
         painter.drawLine(PointF(0, 0), PointF(w, 0))
-        painter.drawImage(QRect(0, 0, w, h), self.qim)
+
+        if self.need_show:
+            painter.drawImage(QRect(0, 0, w, h), self.qim)
+        else:
+            im = self.u_image.pixel
+            ih, iw = im.shape
+            painter.scale(w / iw, h / ih)
+
+            for i in range(iw):
+                for j in range(ih):
+                    b = im[j, i]
+                    painter.fillRect(i, j, 1, 1, QColor(b, b, b))

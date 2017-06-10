@@ -231,6 +231,8 @@ class Option:
             w = widgets.ImageWidget()
             w.u_image = u_image
             w.setWindowTitle('{} {}'.format(para.config_path, method))
+            w.path = os.path.join(os.path.dirname(para.signal_path),
+                                  'image.{}.png'.format(method))
             stored_widgets.append(w)
 
             if para.lateral_test:
@@ -296,6 +298,12 @@ class Option:
                 for w in stored_widgets:
                     w.closed.connect(loop.quit)
                     w.show()
+        else:
+            for w in stored_widgets:
+                w.need_show = False
+                w.update()
+                w.export_to_image(w.path)
+                print(w.path)
 
     @staticmethod
     def output_tip(tip):
