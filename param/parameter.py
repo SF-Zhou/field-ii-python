@@ -150,7 +150,9 @@ class Parameter(AttachAbility):
                 h, w = im_arr.shape
                 ph = np.array(z0 * h, dtype=np.int)
                 pw = np.array(x0 * w, dtype=np.int)
-                amplitude *= im_arr[ph, pw]
+                brightness = im_arr[ph, pw]
+                amplitude *= brightness
+                amplitude[brightness >= 250] *= 4
 
             total = np.ones(self.point_count, dtype=bool)
             for light_cyst in self.light_cysts or []:
