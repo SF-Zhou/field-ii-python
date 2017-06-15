@@ -11,6 +11,7 @@ class LineChart(Widget):
         self.label_x = ''
         self.label_y = ''
         self.setMinimumSize(300, 150)
+        self.setMaximumSize(480, 360)
 
         self.label = []
         self.x_value = []
@@ -71,7 +72,7 @@ class LineChart(Widget):
 
         w = self.width()
         h = self.height()
-        text_width = int(40 * scaling.ratio)
+        text_width = int(30 * scaling.ratio)
         text_height = int(20 * scaling.ratio)
 
         # painter.drawText(QRect(0, 0, w, text_height), Qt.AlignCenter, self.title)
@@ -109,7 +110,7 @@ class LineChart(Widget):
             painter.drawLine(current_point, PointF(horizontal_x, vertical_max))
 
         interval = (y_max - y_min) / 10
-        vertical_labels = list(map(lambda v: '{:.1f}'.format(v), np.arange(y_min, y_max + 1, interval)))
+        vertical_labels = list(map(lambda v: '{:.0f}'.format(v), np.arange(y_min, y_max + 1, interval)))
         vertical_values = list(np.linspace(vertical_min, vertical_max, len(vertical_labels)))
         for vertical_pos, label in zip(vertical_values, vertical_labels):
             if label == vertical_labels[0] or label == vertical_labels[-1]:
@@ -172,6 +173,7 @@ class LineChart(Widget):
 
     @staticmethod
     def draw_circle(painter: Painter, point: PointF):
+        painter.setPen(Pen(QBrush(Qt.black), 1.5, Qt.SolidLine, Qt.RoundCap, Qt.RoundJoin))
         painter.drawEllipse(QRectF(point - QSizeF(5, 5), QSizeF(10, 10)))
 
     @staticmethod

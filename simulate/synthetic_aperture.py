@@ -26,6 +26,15 @@ class SyntheticApertureWorker(field.MatlabWorker):
         self.e.xdc_impulse(receive_aperture, impulse_response)
 
         phantom_positions, phantom_amplitudes = para.phantom
+
+        # # if memory is not enough...
+        # import matlab.engine
+        # self.e.e.workspace['phantom_positions'] = matlab.double(np.array(phantom_positions).tolist())
+        # self.e.e.workspace['phantom_amplitudes'] = matlab.double(np.array(phantom_amplitudes).tolist())
+        # self.e.e.workspace['emit_aperture'] = emit_aperture
+        # self.e.e.workspace['receive_aperture'] = receive_aperture
+        # exit(0)
+
         result = self.e.scat_all(emit_aperture, receive_aperture,
                                  phantom_positions, phantom_amplitudes,
                                  para.sampling_frequency, para.data_length)
