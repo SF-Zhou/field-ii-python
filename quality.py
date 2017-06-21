@@ -55,7 +55,7 @@ for name, value in results.items():
 if 'contrast' in configs[0]:
     w.label_y = 'Contrast (%)'
 else:
-    w.label_y = 'Lateral Resolution (mm)'
+    w.label_y = 'FWHM (mm)'
 w.process()
 
 w.export_to_image(output_filename)
