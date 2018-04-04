@@ -40,22 +40,22 @@ class LineChart(Widget):
     def process(self):
         if self.label[0].endswith('Hz'):
             self.x_value = range(10, 90, 10)
-            self.label_x = 'Frequency (MHz)'
+            self.label_x = '频率 / MHz'
         elif self.label[0].startswith('ec') or self.label[0].startswith('lc'):
             self.x_value = range(32, 32 * 9, 32)
-            self.label_x = 'Number of Elements'
+            self.label_x = '阵元数目'
         elif self.label[0].startswith('rc'):
             self.x_value = range(512, 256 * 9, 256)
-            self.label_x = 'Number of Rows'
+            self.label_x = '图像行数'
         else:
             pass
 
         if self.maximum > 10000:
             for line in self.lines:
                 line['line'] = [num / 1000 for num in line['line']]
-            self.label_y = 'Time (s)'
+            self.label_y = '时间 / 秒'
         else:
-            self.label_y = 'Time (ms)'
+            self.label_y = '时间 / 毫秒'
 
         self.update()
 
@@ -68,7 +68,7 @@ class LineChart(Widget):
         return max(map(lambda line: max(line['line']), self.lines))
 
     def paint(self, painter: Painter):
-        painter.setFont(QFont('Times New Roman', 12))
+        painter.setFont(QFont('SimSun', 12))
 
         w = self.width()
         h = self.height()
@@ -101,9 +101,9 @@ class LineChart(Widget):
         horizontal_values = list(np.linspace(horizontal_min, horizontal_max, len(horizontal_labels)))
         for horizontal_x, label in zip(horizontal_values, horizontal_labels):
             if label == horizontal_labels[0] or label == horizontal_labels[-1]:
-                painter.setPen(Pen(QBrush(Qt.black), 1.5, Qt.SolidLine))
+                painter.setPen(Pen(QBrush(Qt.black), 1.5, Qt.SolidLine, Qt.RoundCap, Qt.RoundJoin))
             else:
-                painter.setPen(Pen(QBrush(Qt.black), 0.8, Qt.DotLine, Qt.RoundCap))
+                painter.setPen(Pen(QBrush(Qt.black), 0.8, Qt.DotLine, Qt.RoundCap, Qt.RoundJoin))
 
             current_point = PointF(horizontal_x, vertical_min)
             painter.draw_text_bottom(current_point, label, margin=2, background_color=Qt.transparent)
@@ -114,9 +114,9 @@ class LineChart(Widget):
         vertical_values = list(np.linspace(vertical_min, vertical_max, len(vertical_labels)))
         for vertical_pos, label in zip(vertical_values, vertical_labels):
             if label == vertical_labels[0] or label == vertical_labels[-1]:
-                painter.setPen(Pen(QBrush(Qt.black), 1.5, Qt.SolidLine))
+                painter.setPen(Pen(QBrush(Qt.black), 1.5, Qt.SolidLine, Qt.RoundCap, Qt.RoundJoin))
             else:
-                painter.setPen(Pen(QBrush(Qt.black), 0.8, Qt.DotLine, Qt.RoundCap))
+                painter.setPen(Pen(QBrush(Qt.black), 0.8, Qt.DotLine, Qt.RoundCap, Qt.RoundJoin))
 
             current_point = PointF(horizontal_min, vertical_pos)
             painter.draw_text_left(current_point, label, background_color=Qt.transparent)
@@ -139,35 +139,38 @@ class LineChart(Widget):
 
                 shape_func(painter, current_point)
                 if previous_point:
-                    painter.setPen(Pen(QBrush(Qt.black), 1.5, l))
+                    painter.setPen(Pen(QBrush(Qt.black), 1.5, l, Qt.RoundCap, Qt.RoundJoin))
                     painter.drawLine(previous_point, current_point)
                 previous_point = current_point
 
         left_top = PointF(horizontal_min, vertical_max) + SizeF(5, 5)
         painter.setBrush(Qt.white)
-        painter.setPen(Pen(Qt.black))
-        painter.drawRect(QRectF(left_top, SizeF(100, 50)))
+        painter.setPen(Pen(Qt.black, 1.0, Qt.SolidLine, Qt.RoundCap, Qt.RoundJoin))
+        painter.drawRect(QRectF(left_top, SizeF(150, 50)))
 
         current = left_top + SizeF(10, 10)
         self.draw_square(painter, current)
-        painter.draw_text_right(current, 'i7', margin=15, background_color=Qt.white)
+        painter.draw_text_right(current, '设备1', margin=15, background_color=Qt.white)
 
         current += SizeF(0, 15)
         self.draw_triangle(painter, current)
-        painter.draw_text_right(current, 'i5', margin=15, background_color=Qt.white)
+        painter.draw_text_right(current, '设备2', margin=15, background_color=Qt.white)
 
         current += SizeF(0, 15)
         self.draw_circle(painter, current)
-        painter.draw_text_right(current, 'TX1', margin=15, background_color=Qt.white)
+        painter.draw_text_right(current, '设备3', margin=15, background_color=Qt.white)
 
-        current = left_top + SizeF(55, 10)
+        current = left_top + SizeF(65, 10)
         painter.drawLine(current - SizeF(10, 0), current + SizeF(5, 0))
         painter.draw_text_right(current, self.method, margin=15, background_color=Qt.white)
 
         current += SizeF(0, 15)
-        painter.setPen(Pen(QBrush(Qt.black), 1.5, Qt.DashLine, Qt.RoundCap))
+        painter.setPen(Pen(QBrush(Qt.black), 1.5, Qt.DashLine, Qt.RoundCap, Qt.RoundJoin))
         painter.drawLine(current - SizeF(10, 0), current + SizeF(5, 0))
-        painter.draw_text_right(current, self.reversed_method, margin=15, background_color=Qt.white)
+        painter.draw_text_right(current, self.reversed_method[:6], margin=15, background_color=Qt.white)
+
+        current += SizeF(0, 15)
+        painter.draw_text_right(current, '算法', margin=15, background_color=Qt.white)
 
         painter.end()
 
@@ -191,3 +194,18 @@ class LineChart(Widget):
     @staticmethod
     def draw_none(painter: Painter, point: PointF):
         pass
+
+
+if __name__ == '__main__':
+    w = LineChart()
+    w.x_value = [1, 2, 3]
+    w.lines = [{
+        'line': [10, 20, 60],
+        'shape': 'none',
+        'is_dash': False
+    }]
+    w.label = ['1 Hz']
+    w.process()
+    w.method = '延迟叠加算法'
+    w.reversed_method = '反向延迟叠加算法'
+    w.exec()

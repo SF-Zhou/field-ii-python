@@ -46,11 +46,11 @@ for result_config in configs:
 
 w = widgets.LineChart()
 if 'synthetic' in configs[0]:
-    w.method = 'SA'
-    w.reversed_method = 'RSA'
+    w.method = '合成孔径算法'
+    w.reversed_method = '反向合成孔径算法'
 else:
-    w.method = 'DAS'
-    w.reversed_method = 'RDAS'
+    w.method = '延迟叠加算法'
+    w.reversed_method = '反向延迟叠加算法'
 
 for name, value in results.items():
     value.sort()
