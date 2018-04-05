@@ -3,8 +3,6 @@ from .. import QPainter, QColor, QPen, QRectF, Qt
 
 
 class Painter(QPainter):
-    default_background_color = QColor(222, 222, 222, 196)
-
     def draw_text(self, text_rect: QRectF, text: str,
                   color: QColor=None,
                   background_color: QColor=None,
@@ -14,9 +12,8 @@ class Painter(QPainter):
         self.setPen(Qt.transparent)
         if background_color:
             self.setBrush(background_color)
-        else:
-            self.setBrush(self.default_background_color)
-        self.drawRoundedRect(text_rect, background_round_size, background_round_size)
+            self.drawRoundedRect(text_rect, background_round_size, background_round_size)
+
         if color:
             self.setPen(QPen(color))
         else:

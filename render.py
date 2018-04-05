@@ -72,5 +72,8 @@ for name, value in results.items():
 w.process()
 
 w.export_to_image(output_filename)
+wmf_name = output_filename.replace('pdf', 'wmf')
+os.system("inkscape --without-gui -f {} -m {}".format(output_filename, wmf_name))
+
 if show:
     w.exec()

@@ -3,6 +3,8 @@ import typing
 import numpy as np
 from quive import *
 
+r = 3
+
 
 class LineChart(Widget):
     def __init__(self, *args):
@@ -150,46 +152,49 @@ class LineChart(Widget):
 
         current = left_top + SizeF(10, 10)
         self.draw_square(painter, current)
-        painter.draw_text_right(current, '设备1', margin=15, background_color=Qt.white)
+        painter.draw_text_right(current, '设备1', margin=12)
 
         current += SizeF(0, 15)
         self.draw_triangle(painter, current)
-        painter.draw_text_right(current, '设备2', margin=15, background_color=Qt.white)
+        painter.draw_text_right(current, '设备2', margin=12)
 
         current += SizeF(0, 15)
         self.draw_circle(painter, current)
-        painter.draw_text_right(current, '设备3', margin=15, background_color=Qt.white)
+        painter.draw_text_right(current, '设备3', margin=12)
 
         current = left_top + SizeF(65, 10)
         painter.drawLine(current - SizeF(10, 0), current + SizeF(5, 0))
-        painter.draw_text_right(current, self.method, margin=15, background_color=Qt.white)
+        painter.draw_text_right(current, self.method, margin=12)
 
         current += SizeF(0, 15)
         painter.setPen(Pen(QBrush(Qt.black), 1.5, Qt.DashLine, Qt.RoundCap, Qt.RoundJoin))
         painter.drawLine(current - SizeF(10, 0), current + SizeF(5, 0))
-        painter.draw_text_right(current, self.reversed_method[:6], margin=15, background_color=Qt.white)
+        painter.draw_text_right(current, self.reversed_method[:6], margin=12)
 
         current += SizeF(0, 15)
-        painter.draw_text_right(current, '算法', margin=15, background_color=Qt.white)
+        painter.draw_text_right(current, '算法', margin=12)
 
         painter.end()
 
     @staticmethod
     def draw_circle(painter: Painter, point: PointF):
         painter.setPen(Pen(QBrush(Qt.black), 1.5, Qt.SolidLine, Qt.RoundCap, Qt.RoundJoin))
-        painter.drawEllipse(QRectF(point - QSizeF(5, 5), QSizeF(10, 10)))
+        painter.drawEllipse(QRectF(point - QSizeF(r, r), QSizeF(r * 2, r * 2)))
 
     @staticmethod
     def draw_triangle(painter: Painter, point: PointF):
         painter.setPen(Pen(QBrush(Qt.black), 1.5, Qt.SolidLine, Qt.RoundCap, Qt.RoundJoin))
-        painter.drawLine(point - SizeF(0, 4), point + SizeF(+4.3, 3.5))
-        painter.drawLine(point - SizeF(0, 4), point + SizeF(-4.3, 3.5))
-        painter.drawLine(point + SizeF(+4.3, 3.5), point + SizeF(-4.3, 3.5))
+
+        a = r * 4.3 / 4
+        b = r * 3.5 / 4
+        painter.drawLine(point - SizeF(0, r), point + SizeF(+a, b))
+        painter.drawLine(point - SizeF(0, r), point + SizeF(-a, b))
+        painter.drawLine(point + SizeF(+a, b), point + SizeF(-a, b))
 
     @staticmethod
     def draw_square(painter: Painter, point: PointF):
         painter.setPen(Pen(QBrush(Qt.black), 1.5, Qt.SolidLine, Qt.RoundCap, Qt.RoundJoin))
-        painter.drawRect(QRectF(point - SizeF(5, 5), QSizeF(10, 10)))
+        painter.drawRect(QRectF(point - SizeF(r, r), QSizeF(r * 2, r * 2)))
 
     @staticmethod
     def draw_none(painter: Painter, point: PointF):
