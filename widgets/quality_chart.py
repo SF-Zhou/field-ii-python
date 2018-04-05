@@ -3,6 +3,8 @@ import typing
 import numpy as np
 from quive import *
 
+r = 3
+
 
 class QualityChart(Widget):
     def __init__(self, *args):
@@ -36,16 +38,15 @@ class QualityChart(Widget):
     def process(self):
         if self.label[0].endswith('Hz'):
             self.x_value = range(10, 90, 10)
-            self.label_x = 'Frequency (MHz)'
+            self.label_x = '频率 / MHz'
         elif self.label[0].startswith('ec') or self.label[0].startswith('lc'):
-            if self.label[0].startswith('lc') and self.label_y.startswith('Contrast'):
+            self.x_value = range(32, 32 * 9, 32)
+            self.label_x = '阵元数目'
+            if len(self.label) == 7:
                 self.x_value = range(64, 32 * 9, 32)
-            else:
-                self.x_value = range(32, 32 * 9, 32)
-            self.label_x = 'Number of Elements'
         elif self.label[0].startswith('rc'):
             self.x_value = range(512, 256 * 9, 256)
-            self.label_x = 'Number of Rows'
+            self.label_x = '图像行数'
         else:
             pass
 
@@ -60,7 +61,7 @@ class QualityChart(Widget):
         return max(map(lambda line: max(line['line']), self.lines))
 
     def paint(self, painter: Painter):
-        painter.setFont(QFont('Times New Roman', 12))
+        painter.setFont(QFont('SimSun', 12))
 
         sub = self.maximum - self.minimum
         if sub < 0.15:
@@ -110,12 +111,12 @@ class QualityChart(Widget):
         horizontal_values = list(np.linspace(horizontal_min, horizontal_max, len(horizontal_labels)))
         for horizontal_x, label in zip(horizontal_values, horizontal_labels):
             if label == horizontal_labels[0] or label == horizontal_labels[-1]:
-                painter.setPen(Pen(QBrush(Qt.black), 1.5, Qt.SolidLine))
+                painter.setPen(Pen(QBrush(Qt.black), 1.5, Qt.SolidLine, Qt.RoundCap, Qt.RoundJoin))
             else:
-                painter.setPen(Pen(QBrush(Qt.black), 0.8, Qt.DotLine, Qt.RoundCap))
+                painter.setPen(Pen(QBrush(Qt.black), 0.8, Qt.DotLine, Qt.RoundCap, Qt.RoundJoin))
 
             current_point = PointF(horizontal_x, vertical_min)
-            painter.draw_text_bottom(current_point, label, margin=2, background_color=Qt.transparent)
+            painter.draw_text_bottom(current_point, label, margin=2)
             painter.drawLine(current_point, PointF(horizontal_x, vertical_max))
 
         format_str = '{:.2f}' if step < 0.1 else '{:.1f}'
@@ -123,12 +124,12 @@ class QualityChart(Widget):
         vertical_values = list(np.linspace(vertical_min, vertical_max, len(vertical_labels)))
         for vertical_pos, label in zip(vertical_values, vertical_labels):
             if label == vertical_labels[0] or label == vertical_labels[-1]:
-                painter.setPen(Pen(QBrush(Qt.black), 1.5, Qt.SolidLine))
+                painter.setPen(Pen(QBrush(Qt.black), 1.5, Qt.SolidLine, Qt.RoundCap, Qt.RoundJoin))
             else:
-                painter.setPen(Pen(QBrush(Qt.black), 0.8, Qt.DotLine, Qt.RoundCap))
+                painter.setPen(Pen(QBrush(Qt.black), 0.8, Qt.DotLine, Qt.RoundCap, Qt.RoundJoin))
 
             current_point = PointF(horizontal_min, vertical_pos)
-            painter.draw_text_left(current_point, label, background_color=Qt.transparent)
+            painter.draw_text_left(current_point, label)
             painter.drawLine(current_point, PointF(horizontal_max, vertical_pos))
 
         for line in self.lines:
@@ -148,42 +149,57 @@ class QualityChart(Widget):
 
                 shape_func(painter, current_point)
                 if previous_point:
-                    painter.setPen(Pen(QBrush(Qt.black), 1.5, l))
+                    painter.setPen(Pen(QBrush(Qt.black), 1.5, l, Qt.RoundCap, Qt.RoundJoin))
                     painter.drawLine(previous_point, current_point)
                 previous_point = current_point
 
-        left_top = PointF(horizontal_max, vertical_max) + SizeF(-65, 5)
-        painter.setBrush(Qt.white)
-        painter.setPen(Pen(Qt.black))
-        painter.drawRect(QRectF(left_top, SizeF(60, 35)))
+        if self.label_y.endswith('mm'):
+            left_top = PointF(horizontal_max, vertical_max) + SizeF(-175, 5)
+        else:
+            left_top = PointF(horizontal_max, vertical_min) + SizeF(-175, -40)
 
-        current = left_top + SizeF(15, 10)
-        painter.drawLine(current - SizeF(10, 0), current + SizeF(5, 0))
-        painter.draw_text_right(current, self.method, margin=15, background_color=Qt.white)
+        painter.setBrush(Qt.white)
+        painter.setPen(Pen(Qt.black, 1.0, Qt.SolidLine, Qt.RoundCap, Qt.RoundJoin))
+        painter.drawRect(QRectF(left_top, SizeF(170, 35)))
+
+        current = left_top + SizeF(10, 10)
+        self.draw_circle(painter, current)
+        painter.draw_text_right(current, '25mm', margin=12)
 
         current += SizeF(0, 15)
-        painter.setPen(Pen(QBrush(Qt.black), 1.5, Qt.DashLine, Qt.RoundCap))
+        self.draw_square(painter, current)
+        painter.draw_text_right(current, '45mm', margin=12)
+
+        current = left_top + SizeF(62, 10)
         painter.drawLine(current - SizeF(10, 0), current + SizeF(5, 0))
-        painter.draw_text_right(current, self.reversed_method, margin=15, background_color=Qt.white)
+        painter.draw_text_right(current, self.method, margin=12)
+
+        current += SizeF(0, 15)
+        painter.setPen(Pen(QBrush(Qt.black), 1.5, Qt.DashLine, Qt.RoundCap, Qt.RoundJoin))
+        painter.drawLine(current - SizeF(10, 0), current + SizeF(5, 0))
+        painter.draw_text_right(current, self.reversed_method, margin=12)
 
         painter.end()
 
     @staticmethod
     def draw_circle(painter: Painter, point: PointF):
         painter.setPen(Pen(QBrush(Qt.black), 1.5, Qt.SolidLine, Qt.RoundCap, Qt.RoundJoin))
-        painter.drawEllipse(QRectF(point - QSizeF(5, 5), QSizeF(10, 10)))
+        painter.drawEllipse(QRectF(point - QSizeF(r, r), QSizeF(r * 2, r * 2)))
 
     @staticmethod
     def draw_triangle(painter: Painter, point: PointF):
         painter.setPen(Pen(QBrush(Qt.black), 1.5, Qt.SolidLine, Qt.RoundCap, Qt.RoundJoin))
-        painter.drawLine(point - SizeF(0, 4), point + SizeF(+4.3, 3.5))
-        painter.drawLine(point - SizeF(0, 4), point + SizeF(-4.3, 3.5))
-        painter.drawLine(point + SizeF(+4.3, 3.5), point + SizeF(-4.3, 3.5))
+
+        a = r * 4.3 / 4
+        b = r * 3.5 / 4
+        painter.drawLine(point - SizeF(0, r), point + SizeF(+a, b))
+        painter.drawLine(point - SizeF(0, r), point + SizeF(-a, b))
+        painter.drawLine(point + SizeF(+a, b), point + SizeF(-a, b))
 
     @staticmethod
     def draw_square(painter: Painter, point: PointF):
         painter.setPen(Pen(QBrush(Qt.black), 1.5, Qt.SolidLine, Qt.RoundCap, Qt.RoundJoin))
-        painter.drawRect(QRectF(point - SizeF(5, 5), QSizeF(10, 10)))
+        painter.drawRect(QRectF(point - SizeF(r, r), QSizeF(r * 2, r * 2)))
 
     @staticmethod
     def draw_none(painter: Painter, point: PointF):
