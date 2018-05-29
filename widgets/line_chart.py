@@ -108,7 +108,7 @@ class LineChart(Widget):
                 painter.setPen(Pen(QBrush(Qt.black), 0.8, Qt.DotLine, Qt.RoundCap, Qt.RoundJoin))
 
             current_point = PointF(horizontal_x, vertical_min)
-            painter.draw_text_bottom(current_point, label, margin=2, background_color=Qt.transparent)
+            painter.draw_text_bottom(current_point, label, margin=2)
             painter.drawLine(current_point, PointF(horizontal_x, vertical_max))
 
         interval = (y_max - y_min) / 10
@@ -121,7 +121,7 @@ class LineChart(Widget):
                 painter.setPen(Pen(QBrush(Qt.black), 0.8, Qt.DotLine, Qt.RoundCap, Qt.RoundJoin))
 
             current_point = PointF(horizontal_min, vertical_pos)
-            painter.draw_text_left(current_point, label, background_color=Qt.transparent)
+            painter.draw_text_left(current_point, label)
             painter.drawLine(current_point, PointF(horizontal_max, vertical_pos))
 
         for line in self.lines:
