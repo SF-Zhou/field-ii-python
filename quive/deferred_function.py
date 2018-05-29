@@ -1,4 +1,5 @@
 from . import *
+from PyQt5.QtSvg import QSvgGenerator
 from PyQt5.QtPrintSupport import QPrinter
 
 
@@ -66,9 +67,20 @@ def export_to_pdf(self: Widget, filename: str):
 
 
 @deferred_define
+def export_to_svg(self: Widget, filename: str):
+    generator = QSvgGenerator()
+    generator.setFileName(self.path)
+    generator.setSize(QSize(*self.size))
+    generator.setViewBox(self.rect())
+    self.render(generator)
+
+
+@deferred_define
 def export_to_image(self: Widget, filename: str):
     if filename.endswith('pdf'):
         return export_to_pdf(self, filename)
+    elif filename.endswith('svg'):
+        return export_to_svg(self, filename)
 
     p = QPixmap(*self.size)
     painter = QPainter(p)
