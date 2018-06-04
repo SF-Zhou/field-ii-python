@@ -232,7 +232,7 @@ class Option:
             w.u_image = u_image
             w.setWindowTitle('{} {}'.format(para.config_path, method))
             w.path = os.path.join(os.path.dirname(para.signal_path),
-                                  'image.{}.png'.format(method))
+                                  'image.{}.pdf'.format(method))
             stored_widgets.append(w)
 
             if para.lateral_test:
@@ -296,13 +296,16 @@ class Option:
         if show:
             with quive.EventLoop() as loop:
                 for w in stored_widgets:
+                    w.resize(1000, 707)
                     w.closed.connect(loop.quit)
                     w.show()
         else:
             for w in stored_widgets:
-                w.need_show = False
+                w.resize(1000, 707)
                 w.update()
+                w.qim.save(w.path + '.png')
                 w.export_to_image(w.path)
+
                 print(w.path)
 
     @staticmethod

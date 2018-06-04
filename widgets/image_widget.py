@@ -27,6 +27,9 @@ class ImageWidget(Widget):
 
         im = u_image.pixel
         self.qim = QImage(im.flatten(), *im.T.shape, QImage.Format_Indexed8)
+
+        w, h = im.T.shape
+        self.qim.scaled(w * 2, h * 2)
         self.qim.setColorTable(self.gray_color_table)
 
         self.update()
@@ -35,18 +38,14 @@ class ImageWidget(Widget):
         self.u_image = u_image
 
     def paint(self, painter: Painter):
-        painter.setFont(QFont('Times New Roman'))
+        painter.setFont(QFont('Simsun', 40))
         if self.u_image is None:
             return
 
         w, h = self.size
-        text_size = (45, 20)
+        text_size = (90, 45)
         text_width, text_height = text_size
         image_width, image_height = self.u_image.size
-
-        w -= text_width + 5
-        h -= int(text_height * 1.5)
-        painter.translate(*text_size)
 
         expected_h = int(w / image_width * image_height)
         if expected_h > h:
@@ -57,38 +56,41 @@ class ImageWidget(Widget):
             painter.translate(0, (h - expected_h) // 2)
             h = expected_h
 
+        painter.save()
+        painter.translate(0, h)
+        painter.rotate(-90)
+        painter.drawText(QRect(0, 0, h, text_height), Qt.AlignCenter, '深度 / mm')
+        painter.restore()
+        w -= text_width
+        h -= text_height * 2
+        painter.translate(text_width, text_height * 2)
+
         half_image_width = image_width / 2
         for x in np.arange(0, half_image_width + 1e-5, 10):
             percent = (half_image_width + x) / image_width
 
             painter.drawLine(PointF(w * percent, 0), PointF(w * percent, -4))
-            painter.draw_text_top(PointF(w * percent, 0), "{} mm".format(int(x)),
-                                  margin=5, background_color=Qt.white)
+            painter.draw_text_top(PointF(w * percent, 0), "{}".format(int(x)),
+                                  margin=5, background_color=Qt.transparent)
 
-            percent = 1 - percent
-            painter.drawLine(PointF(w * percent, 0), PointF(w * percent, -4))
-            painter.draw_text_top(PointF(w * percent, 0), "{} mm".format(-int(x)),
-                                  margin=5, background_color=Qt.white)
+            if x == 0:
+                painter.draw_text_top(PointF(w * percent, 0), "宽度 / mm",
+                                      margin=8 + text_height, background_color=Qt.transparent)
+            else:
+                percent = 1 - percent
+                painter.drawLine(PointF(w * percent, 0), PointF(w * percent, -4))
+                painter.draw_text_top(PointF(w * percent, 0), "{}".format(-int(x)),
+                                    margin=5, background_color=Qt.transparent)
 
         z_start = self.u_image.z_start
         for y in np.arange(0, image_height + 1e-5, 10):
             percent = y / image_height
 
             painter.drawLine(PointF(0, h * percent), PointF(-4, h * percent))
-            painter.draw_text_left(PointF(0, h * percent), "{} mm".format(int(y + z_start)),
-                                   margin=8, background_color=Qt.white)
+            painter.draw_text_left(PointF(0, h * percent), "{}".format(int(y + z_start)),
+                                   margin=8, background_color=Qt.transparent)
 
         painter.drawLine(PointF(0, 0), PointF(0, h))
         painter.drawLine(PointF(0, 0), PointF(w, 0))
 
-        if self.need_show:
-            painter.drawImage(QRect(0, 0, w, h), self.qim)
-        else:
-            im = self.u_image.pixel
-            ih, iw = im.shape
-            painter.scale(w / iw, h / ih)
-
-            for i in range(iw):
-                for j in range(ih):
-                    b = im[j, i]
-                    painter.fillRect(i, j, 1, 1, QColor(b, b, b))
+        painter.drawImage(QRect(0, 0, w, h), self.qim)
