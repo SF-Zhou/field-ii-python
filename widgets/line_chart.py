@@ -120,7 +120,9 @@ class LineChart(Widget):
                 painter.setPen(Pen(QBrush(Qt.black), 0.8, Qt.DotLine, Qt.RoundCap, Qt.RoundJoin))
 
             current_point = PointF(horizontal_min, vertical_pos)
-            painter.draw_text_left(current_point, label)
+
+            if label != vertical_labels[0]:
+                painter.draw_text_left(current_point, label)
             painter.drawLine(current_point, PointF(horizontal_max, vertical_pos))
 
         for line in self.lines:
