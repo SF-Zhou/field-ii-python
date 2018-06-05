@@ -138,7 +138,7 @@ class QualityChart(Widget):
 
             shape = line['shape']
             shape_func = getattr(self, 'draw_{}'.format(shape))
-            l = Qt.DashLine if line['is_dash'] else Qt.SolidLine
+            l = Qt.DotLine if line['is_dash'] else Qt.SolidLine
 
             for x, y in zip(self.x_value, nums):
                 percent_x = (x - x_min) / (x_max - x_min)
@@ -154,41 +154,50 @@ class QualityChart(Widget):
                 previous_point = current_point
 
         if self.label_y.endswith('mm'):
-            left_top = PointF(horizontal_max, vertical_max) + SizeF(-175, 5)
+            left_top = PointF(horizontal_max, vertical_max) + SizeF(-150, 5)
         else:
-            left_top = PointF(horizontal_max, vertical_min) + SizeF(-175, -40)
+            left_top = PointF(horizontal_max, vertical_min) + SizeF(-150, -40)
 
         painter.setBrush(Qt.white)
         painter.setPen(Pen(Qt.black, 1.0, Qt.SolidLine, Qt.RoundCap, Qt.RoundJoin))
-        painter.drawRect(QRectF(left_top, SizeF(170, 35)))
+        painter.drawRect(QRectF(left_top, SizeF(145, 35)))
 
         current = left_top + SizeF(10, 10)
+        painter.setPen(Pen(QBrush(Qt.black), 1.5, Qt.SolidLine, Qt.RoundCap, Qt.RoundJoin))
+        painter.drawLine(current - SizeF(7, 0), current + SizeF(7, 0))
         self.draw_circle(painter, current)
-        painter.draw_text_right(current, '25mm', margin=12)
+        painter.draw_text_right(current, '{}-25mm'.format(self.method), margin=12)
 
         current += SizeF(0, 15)
+        painter.setPen(Pen(QBrush(Qt.black), 1.5, Qt.SolidLine, Qt.RoundCap, Qt.RoundJoin))
+        painter.drawLine(current - SizeF(7, 0), current + SizeF(7, 0))
         self.draw_square(painter, current)
-        painter.draw_text_right(current, '45mm', margin=12)
+        painter.draw_text_right(current, '{}-45mm'.format(self.method), margin=12)
 
-        current = left_top + SizeF(62, 10)
-        painter.drawLine(current - SizeF(10, 0), current + SizeF(5, 0))
-        painter.draw_text_right(current, self.method, margin=12)
+        current = left_top + SizeF(80, 10)
+        painter.setPen(Pen(QBrush(Qt.black), 1.5, Qt.DotLine, Qt.RoundCap, Qt.RoundJoin))
+        painter.drawLine(current - SizeF(7, 0), current + SizeF(7, 0))
+        self.draw_circle(painter, current)
+        painter.draw_text_right(current, '{}-25mm'.format(self.reversed_method), margin=12)
 
         current += SizeF(0, 15)
-        painter.setPen(Pen(QBrush(Qt.black), 1.5, Qt.DashLine, Qt.RoundCap, Qt.RoundJoin))
-        painter.drawLine(current - SizeF(10, 0), current + SizeF(5, 0))
-        painter.draw_text_right(current, self.reversed_method, margin=12)
+        painter.setPen(Pen(QBrush(Qt.black), 1.5, Qt.DotLine, Qt.RoundCap, Qt.RoundJoin))
+        painter.drawLine(current - SizeF(7, 0), current + SizeF(7, 0))
+        self.draw_square(painter, current)
+        painter.draw_text_right(current, '{}-45mm'.format(self.reversed_method), margin=12)
 
         painter.end()
 
     @staticmethod
     def draw_circle(painter: Painter, point: PointF):
         painter.setPen(Pen(QBrush(Qt.black), 1.5, Qt.SolidLine, Qt.RoundCap, Qt.RoundJoin))
+        painter.setBrush(QBrush(Qt.transparent))
         painter.drawEllipse(QRectF(point - QSizeF(r, r), QSizeF(r * 2, r * 2)))
 
     @staticmethod
     def draw_triangle(painter: Painter, point: PointF):
         painter.setPen(Pen(QBrush(Qt.black), 1.5, Qt.SolidLine, Qt.RoundCap, Qt.RoundJoin))
+        painter.setBrush(QBrush(Qt.transparent))
 
         a = r * 4.3 / 4
         b = r * 3.5 / 4
@@ -199,8 +208,5 @@ class QualityChart(Widget):
     @staticmethod
     def draw_square(painter: Painter, point: PointF):
         painter.setPen(Pen(QBrush(Qt.black), 1.5, Qt.SolidLine, Qt.RoundCap, Qt.RoundJoin))
+        painter.setBrush(QBrush(Qt.transparent))
         painter.drawRect(QRectF(point - SizeF(r, r), QSizeF(r * 2, r * 2)))
-
-    @staticmethod
-    def draw_none(painter: Painter, point: PointF):
-        pass
