@@ -46,11 +46,11 @@ for result_config in configs:
 
 w = widgets.LineChart()
 if 'synthetic' in configs[0]:
-    w.method = '合成孔径算法'
-    w.reversed_method = '反向合成孔径算法'
+    w.method = 'SA'
+    w.reversed_method = 'RSA'
 else:
-    w.method = '延迟叠加算法'
-    w.reversed_method = '反向延迟叠加算法'
+    w.method = 'DAS'
+    w.reversed_method = 'RDAS'
 
 for name, value in results.items():
     value.sort()
@@ -72,8 +72,6 @@ for name, value in results.items():
 w.process()
 
 w.export_to_image(output_filename)
-wmf_name = output_filename.replace('pdf', 'wmf')
-os.system("inkscape --without-gui -f {} -m {}".format(output_filename, wmf_name))
 
 if show:
     w.exec()

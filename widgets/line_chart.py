@@ -77,7 +77,6 @@ class LineChart(Widget):
         text_width = int(30 * scaling.ratio)
         text_height = int(20 * scaling.ratio)
 
-        # painter.drawText(QRect(0, 0, w, text_height), Qt.AlignCenter, self.title)
         painter.drawText(QRect(0, h - text_height, w, text_height), Qt.AlignCenter, self.label_x)
         # translate and rotate for paint vertical text
         painter.save()
@@ -130,7 +129,7 @@ class LineChart(Widget):
 
             shape = line['shape']
             shape_func = getattr(self, 'draw_{}'.format(shape))
-            l = Qt.DashLine if line['is_dash'] else Qt.SolidLine
+            l = Qt.DotLine if line['is_dash'] else Qt.SolidLine
 
             for x, y in zip(self.x_value, nums):
                 percent_x = (x - x_min) / (x_max - x_min)
@@ -148,42 +147,54 @@ class LineChart(Widget):
         left_top = PointF(horizontal_min, vertical_max) + SizeF(5, 5)
         painter.setBrush(Qt.white)
         painter.setPen(Pen(Qt.black, 1.0, Qt.SolidLine, Qt.RoundCap, Qt.RoundJoin))
-        painter.drawRect(QRectF(left_top, SizeF(150, 50)))
+        painter.drawRect(QRectF(left_top, SizeF(162, 50)))
 
         current = left_top + SizeF(10, 10)
+        painter.setPen(Pen(QBrush(Qt.black), 1.5, Qt.SolidLine, Qt.RoundCap, Qt.RoundJoin))
+        painter.drawLine(current - SizeF(7, 0), current + SizeF(7, 0))
         self.draw_square(painter, current)
-        painter.draw_text_right(current, '设备1', margin=12)
+        painter.draw_text_right(current, '{}-设备1'.format(self.method), margin=12)
 
         current += SizeF(0, 15)
+        painter.drawLine(current - SizeF(7, 0), current + SizeF(7, 0))
         self.draw_triangle(painter, current)
-        painter.draw_text_right(current, '设备2', margin=12)
+        painter.draw_text_right(current, '{}-设备2'.format(self.method), margin=12)
 
         current += SizeF(0, 15)
+        painter.drawLine(current - SizeF(7, 0), current + SizeF(7, 0))
         self.draw_circle(painter, current)
-        painter.draw_text_right(current, '设备3', margin=12)
+        painter.draw_text_right(current, '{}-设备3'.format(self.method), margin=12)
 
-        current = left_top + SizeF(65, 10)
-        painter.drawLine(current - SizeF(10, 0), current + SizeF(5, 0))
-        painter.draw_text_right(current, self.method, margin=12)
-
-        current += SizeF(0, 15)
-        painter.setPen(Pen(QBrush(Qt.black), 1.5, Qt.DashLine, Qt.RoundCap, Qt.RoundJoin))
-        painter.drawLine(current - SizeF(10, 0), current + SizeF(5, 0))
-        painter.draw_text_right(current, self.reversed_method[:6], margin=12)
+        current = left_top + SizeF(90, 10)
+        painter.setPen(Pen(QBrush(Qt.black), 1.5, Qt.DotLine, Qt.RoundCap, Qt.RoundJoin))
+        painter.drawLine(current - SizeF(7, 0), current + SizeF(7, 0))
+        self.draw_square(painter, current)
+        painter.draw_text_right(current, '{}-设备1'.format(self.reversed_method), margin=12)
 
         current += SizeF(0, 15)
-        painter.draw_text_right(current, '算法', margin=12)
+        painter.setPen(Pen(QBrush(Qt.black), 1.5, Qt.DotLine, Qt.RoundCap, Qt.RoundJoin))
+        painter.drawLine(current - SizeF(7, 0), current + SizeF(7, 0))
+        self.draw_triangle(painter, current)
+        painter.draw_text_right(current, '{}-设备2'.format(self.reversed_method), margin=12)
+
+        current += SizeF(0, 15)
+        painter.setPen(Pen(QBrush(Qt.black), 1.5, Qt.DotLine, Qt.RoundCap, Qt.RoundJoin))
+        painter.drawLine(current - SizeF(7, 0), current + SizeF(7, 0))
+        self.draw_circle(painter, current)
+        painter.draw_text_right(current, '{}-设备3'.format(self.reversed_method), margin=12)
 
         painter.end()
 
     @staticmethod
     def draw_circle(painter: Painter, point: PointF):
         painter.setPen(Pen(QBrush(Qt.black), 1.5, Qt.SolidLine, Qt.RoundCap, Qt.RoundJoin))
+        painter.setBrush(QBrush(Qt.transparent))
         painter.drawEllipse(QRectF(point - QSizeF(r, r), QSizeF(r * 2, r * 2)))
 
     @staticmethod
     def draw_triangle(painter: Painter, point: PointF):
         painter.setPen(Pen(QBrush(Qt.black), 1.5, Qt.SolidLine, Qt.RoundCap, Qt.RoundJoin))
+        painter.setBrush(QBrush(Qt.transparent))
 
         a = r * 4.3 / 4
         b = r * 3.5 / 4
@@ -194,6 +205,7 @@ class LineChart(Widget):
     @staticmethod
     def draw_square(painter: Painter, point: PointF):
         painter.setPen(Pen(QBrush(Qt.black), 1.5, Qt.SolidLine, Qt.RoundCap, Qt.RoundJoin))
+        painter.setBrush(QBrush(Qt.transparent))
         painter.drawRect(QRectF(point - SizeF(r, r), QSizeF(r * 2, r * 2)))
 
     @staticmethod
@@ -211,6 +223,6 @@ if __name__ == '__main__':
     }]
     w.label = ['1 Hz']
     w.process()
-    w.method = '延迟叠加算法'
-    w.reversed_method = '反向延迟叠加算法'
+    w.method = 'DAS'
+    w.reversed_method = 'RDAS'
     w.exec()
