@@ -38,12 +38,13 @@ class ImageWidget(Widget):
         self.u_image = u_image
 
     def paint(self, painter: Painter):
-        painter.setFont(QFont('Simsun', 40))
+        font_size = 47
+        painter.setFont(QFont('Simsun', font_size))
         if self.u_image is None:
             return
 
         w, h = self.size
-        text_size = (90, 45)
+        text_size = (90 * font_size // 40, 45 * font_size // 40)
         text_width, text_height = text_size
         image_width, image_height = self.u_image.size
 
