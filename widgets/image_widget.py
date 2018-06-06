@@ -63,24 +63,24 @@ class ImageWidget(Widget):
         painter.restore()
         w -= text_width
         h -= text_height * 2
-        painter.translate(text_width, text_height * 2)
+        painter.translate(text_width, text_height / 3)
 
         half_image_width = image_width / 2
         for x in np.arange(0, half_image_width + 1e-5, 10):
             percent = (half_image_width + x) / image_width
 
-            painter.drawLine(PointF(w * percent, 0), PointF(w * percent, -4))
-            painter.draw_text_top(PointF(w * percent, 0), "{}".format(int(x)),
-                                  margin=5, background_color=Qt.transparent)
+            painter.drawLine(PointF(w * percent, h), PointF(w * percent, h+4))
+            painter.draw_text_bottom(PointF(w * percent, h), "{}".format(int(x)),
+                                     margin=5, background_color=Qt.transparent)
 
             if x == 0:
-                painter.draw_text_top(PointF(w * percent, 0), "宽度 / mm",
-                                      margin=8 + text_height, background_color=Qt.transparent)
+                painter.draw_text_bottom(PointF(w * percent, h), "宽度 / mm",
+                                         margin=8 + text_height, background_color=Qt.transparent)
             else:
                 percent = 1 - percent
-                painter.drawLine(PointF(w * percent, 0), PointF(w * percent, -4))
-                painter.draw_text_top(PointF(w * percent, 0), "{}".format(-int(x)),
-                                    margin=5, background_color=Qt.transparent)
+                painter.drawLine(PointF(w * percent, h), PointF(w * percent, h+4))
+                painter.draw_text_bottom(PointF(w * percent, h), "{}".format(-int(x)),
+                                         margin=5, background_color=Qt.transparent)
 
         z_start = self.u_image.z_start
         for y in np.arange(0, image_height + 1e-5, 10):

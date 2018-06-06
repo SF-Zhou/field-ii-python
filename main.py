@@ -296,12 +296,12 @@ class Option:
         if show:
             with quive.EventLoop() as loop:
                 for w in stored_widgets:
-                    w.resize(1000, 707)
+                    w.resize(1000, 717)
                     w.closed.connect(loop.quit)
                     w.show()
         else:
             for w in stored_widgets:
-                w.resize(1000, 707)
+                w.resize(1000, 717)
                 w.update()
                 w.qim.save(w.path + '.png')
                 w.export_to_image(w.path)
