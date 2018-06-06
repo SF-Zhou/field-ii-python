@@ -12,7 +12,7 @@ class ScatterChart(Widget):
         self.label_x = ''
         self.label_y = ''
         self.setMinimumSize(300, 150)
-        # self.setMaximumSize(480, 360)
+        self.setMaximumSize(480, 360)
 
         self.label = []
         self.x_value = []
@@ -157,7 +157,7 @@ class ScatterChart(Widget):
                 block_vertical_max = vertical_max
 
             painter.setPen(Pen(Qt.transparent))
-            painter.setBrush(QBrush(QColor(200, 200, 200, 100)))
+            painter.setBrush(QBrush(QColor(150, 150, 150, 100)))
             painter.drawRoundedRect(QRectF(
                 PointF(block_horizontal_min, block_vertical_min),
                 PointF(block_horizontal_max, block_vertical_max)
