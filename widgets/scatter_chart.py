@@ -20,6 +20,9 @@ class ScatterChart(Widget):
         self.horizontal_threshold = 50.0
         self.vertical_threshold = 0.0
 
+        self.horizontal_like = -1
+        self.vertical_like = -1
+
         self.method = ''
         self.reversed_method = ''
 
@@ -82,8 +85,8 @@ class ScatterChart(Widget):
         # calculate min and max values #
         x_min = min(self.x_value)
         x_max = max(self.x_value)
-        y_min = math.floor(self.minimum / step - 1) * step
-        y_max = math.ceil(self.maximum / step) * step
+        y_min = math.floor(self.minimum / step - 0.5) * step
+        y_max = math.ceil(self.maximum / step + 0.5) * step
 
         horizontal_min = text_height + text_width
         horizontal_max = w - text_width / 2
@@ -107,8 +110,11 @@ class ScatterChart(Widget):
 
         painter.setPen(Pen(QBrush(Qt.black), 1.5, Qt.DashLine, Qt.RoundCap, Qt.RoundJoin))
         percent_x = (self.horizontal_threshold - x_min) / (x_max - x_min)
-        horizontal_pos = horizontal_max * percent_x + horizontal_min * (1 - percent_x)
-        painter.drawLine(PointF(horizontal_pos, vertical_min), PointF(horizontal_pos, vertical_max))
+        horizontal_threshold_pos = horizontal_max * percent_x + horizontal_min * (1 - percent_x)
+        painter.drawLine(
+            PointF(horizontal_threshold_pos, vertical_min),
+            PointF(horizontal_threshold_pos, vertical_max)
+        )
 
         format_str = '{:.2f}' if step < 0.1 else '{:.1f}'
         vertical_labels = list(map(lambda v: format_str.format(v), np.arange(y_min, y_max + 1e-5, step)))
@@ -129,8 +135,33 @@ class ScatterChart(Widget):
 
         painter.setPen(Pen(QBrush(Qt.black), 1.5, Qt.DashLine, Qt.RoundCap, Qt.RoundJoin))
         percent_y = (self.vertical_threshold - y_min) / (y_max - y_min)
-        vertical_pos = vertical_max * percent_y + vertical_min * (1 - percent_y)
-        painter.drawLine(PointF(horizontal_min, vertical_pos), PointF(horizontal_max, vertical_pos))
+        vertical_threshold_pos = vertical_max * percent_y + vertical_min * (1 - percent_y)
+        painter.drawLine(
+            PointF(horizontal_min, vertical_threshold_pos),
+            PointF(horizontal_max, vertical_threshold_pos)
+        )
+
+        if True:
+            if self.horizontal_like == -1:
+                block_horizontal_min = horizontal_min
+                block_horizontal_max = horizontal_threshold_pos
+            else:
+                block_horizontal_min = horizontal_threshold_pos
+                block_horizontal_max = horizontal_max
+
+            if self.vertical_like == -1:
+                block_vertical_min = vertical_min
+                block_vertical_max = vertical_threshold_pos
+            else:
+                block_vertical_min = vertical_threshold_pos
+                block_vertical_max = vertical_max
+
+            painter.setPen(Pen(Qt.transparent))
+            painter.setBrush(QBrush(QColor(200, 200, 200, 100)))
+            painter.drawRoundedRect(QRectF(
+                PointF(block_horizontal_min, block_vertical_min),
+                PointF(block_horizontal_max, block_vertical_max)
+            ), 0.0, 0.0)
 
         for point in self.points:
             x, y, label = point

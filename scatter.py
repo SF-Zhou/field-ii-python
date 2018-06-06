@@ -72,5 +72,6 @@ w = widgets.ScatterChart()
 w.add_points(final_result)
 w.label_y = '对比度'
 w.vertical_threshold = 0.80
+w.vertical_like = 1
 w.process()
 w.export_to_pdf('/t/scatter_con.pdf')
