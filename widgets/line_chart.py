@@ -4,6 +4,13 @@ import numpy as np
 from quive import *
 
 r = 3
+chinese = False
+max_width = 400
+max_height = 350
+
+
+def language(chinese_str, english_str):
+    return chinese_str if chinese else english_str
 
 
 class LineChart(Widget):
@@ -12,8 +19,7 @@ class LineChart(Widget):
 
         self.label_x = ''
         self.label_y = ''
-        self.setMinimumSize(300, 150)
-        self.setMaximumSize(480, 360)
+        self.setMaximumSize(max_width, max_height)
 
         self.label = []
         self.x_value = []
@@ -42,22 +48,22 @@ class LineChart(Widget):
     def process(self):
         if self.label[0].endswith('Hz'):
             self.x_value = range(10, 90, 10)
-            self.label_x = '频率 / MHz'
+            self.label_x = language('频率 / MHz', 'Frequency (MHz)')
         elif self.label[0].startswith('ec') or self.label[0].startswith('lc'):
             self.x_value = range(32, 32 * 9, 32)
-            self.label_x = '阵元数目'
+            self.label_x = language('阵元数目', 'Number of Elements')
         elif self.label[0].startswith('rc'):
             self.x_value = range(512, 256 * 9, 256)
-            self.label_x = '图像行数'
+            self.label_x = language('图像行数', 'Number of Rows')
         else:
             pass
 
         if self.maximum > 10000:
             for line in self.lines:
                 line['line'] = [num / 1000 for num in line['line']]
-            self.label_y = '时间 / 秒'
+            self.label_y = language('时间 / 秒', 'Time (s)')
         else:
-            self.label_y = '时间 / 毫秒'
+            self.label_y = language('时间 / 毫秒', 'Time (ms)')
 
         self.update()
 
@@ -70,7 +76,7 @@ class LineChart(Widget):
         return max(map(lambda line: max(line['line']), self.lines))
 
     def paint(self, painter: Painter):
-        painter.setFont(QFont('SimSun', 12))
+        painter.setFont(QFont(language('SimSun', 'Times New Roman'), 12))
 
         w = self.width()
         h = self.height()
@@ -155,35 +161,35 @@ class LineChart(Widget):
         painter.setPen(Pen(QBrush(Qt.black), 1.5, Qt.SolidLine, Qt.RoundCap, Qt.RoundJoin))
         painter.drawLine(current - SizeF(7, 0), current + SizeF(7, 0))
         self.draw_square(painter, current)
-        painter.draw_text_right(current, '{}-设备1'.format(self.method), margin=12)
+        painter.draw_text_right(current, '{}-{}'.format(self.method, language('设备1', 'i7')), margin=12)
 
         current += SizeF(0, 15)
         painter.drawLine(current - SizeF(7, 0), current + SizeF(7, 0))
         self.draw_triangle(painter, current)
-        painter.draw_text_right(current, '{}-设备2'.format(self.method), margin=12)
+        painter.draw_text_right(current, '{}-{}'.format(self.method, language('设备2', 'i5')), margin=12)
 
         current += SizeF(0, 15)
         painter.drawLine(current - SizeF(7, 0), current + SizeF(7, 0))
         self.draw_circle(painter, current)
-        painter.draw_text_right(current, '{}-设备3'.format(self.method), margin=12)
+        painter.draw_text_right(current, '{}-{}'.format(self.method, language('设备3', 'TX1')), margin=12)
 
         current = left_top + SizeF(90, 10)
         painter.setPen(Pen(QBrush(Qt.black), 1.5, Qt.DotLine, Qt.RoundCap, Qt.RoundJoin))
         painter.drawLine(current - SizeF(7, 0), current + SizeF(7, 0))
         self.draw_square(painter, current)
-        painter.draw_text_right(current, '{}-设备1'.format(self.reversed_method), margin=12)
+        painter.draw_text_right(current, '{}-{}'.format(self.reversed_method, language('设备1', 'i7')), margin=12)
 
         current += SizeF(0, 15)
         painter.setPen(Pen(QBrush(Qt.black), 1.5, Qt.DotLine, Qt.RoundCap, Qt.RoundJoin))
         painter.drawLine(current - SizeF(7, 0), current + SizeF(7, 0))
         self.draw_triangle(painter, current)
-        painter.draw_text_right(current, '{}-设备2'.format(self.reversed_method), margin=12)
+        painter.draw_text_right(current, '{}-{}'.format(self.reversed_method, language('设备2', 'i5')), margin=12)
 
         current += SizeF(0, 15)
         painter.setPen(Pen(QBrush(Qt.black), 1.5, Qt.DotLine, Qt.RoundCap, Qt.RoundJoin))
         painter.drawLine(current - SizeF(7, 0), current + SizeF(7, 0))
         self.draw_circle(painter, current)
-        painter.draw_text_right(current, '{}-设备3'.format(self.reversed_method), margin=12)
+        painter.draw_text_right(current, '{}-{}'.format(self.reversed_method, language('设备3', 'TX1')), margin=12)
 
         painter.end()
 
