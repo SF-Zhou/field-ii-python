@@ -2,8 +2,11 @@ import math
 import typing
 import numpy as np
 from quive import *
+from language import language, chinese
 
 r = 3
+max_width = 400
+max_height = 350
 
 
 class QualityChart(Widget):
@@ -13,7 +16,7 @@ class QualityChart(Widget):
         self.label_x = ''
         self.label_y = ''
         self.setMinimumSize(300, 150)
-        self.setMaximumSize(480, 360)
+        self.setMaximumSize(max_width, max_height)
 
         self.label = []
         self.x_value = []
@@ -38,15 +41,15 @@ class QualityChart(Widget):
     def process(self):
         if self.label[0].endswith('Hz'):
             self.x_value = range(10, 90, 10)
-            self.label_x = '频率 / MHz'
+            self.label_x = language('频率 / MHz', 'Frequency (MHz)')
         elif self.label[0].startswith('ec') or self.label[0].startswith('lc'):
             self.x_value = range(32, 32 * 9, 32)
-            self.label_x = '阵元数目'
+            self.label_x = language('阵元数目', 'Number of Elements')
             if len(self.label) == 7:
                 self.x_value = range(64, 32 * 9, 32)
         elif self.label[0].startswith('rc'):
             self.x_value = range(512, 256 * 9, 256)
-            self.label_x = '图像行数'
+            self.label_x = language('图像行数', 'Number of Rows')
         else:
             pass
 
@@ -61,7 +64,7 @@ class QualityChart(Widget):
         return max(map(lambda line: max(line['line']), self.lines))
 
     def paint(self, painter: Painter):
-        painter.setFont(QFont('SimSun', 12))
+        painter.setFont(QFont(language('SimSun', 'Times New Roman'), 12))
 
         sub = self.maximum - self.minimum
         if sub < 0.15:
@@ -155,14 +158,18 @@ class QualityChart(Widget):
                     painter.drawLine(previous_point, current_point)
                 previous_point = current_point
 
-        if self.label_y.endswith('mm'):
-            left_top = PointF(horizontal_max, vertical_max) + SizeF(-150, 5)
+        left_width = 17 + SizeF.text_size('{}-45mm'.format(self.method), painter.font()).w
+        right_width = 17 + SizeF.text_size('{}-45mm'.format(self.reversed_method), painter.font()).w
+        legend_width = 3 + left_width + 5 + right_width
+
+        if 'mm' in self.label_y:
+            left_top = PointF(horizontal_max, vertical_max) + SizeF(-(legend_width + 5), 5)
         else:
-            left_top = PointF(horizontal_max, vertical_min) + SizeF(-150, -40)
+            left_top = PointF(horizontal_max, vertical_min) + SizeF(-(legend_width + 5), -40)
 
         painter.setBrush(Qt.white)
         painter.setPen(Pen(Qt.black, 1.0, Qt.SolidLine, Qt.RoundCap, Qt.RoundJoin))
-        painter.drawRect(QRectF(left_top, SizeF(145, 35)))
+        painter.drawRect(QRectF(left_top, SizeF(legend_width, 35)))
 
         current = left_top + SizeF(10, 10)
         painter.setPen(Pen(QBrush(Qt.black), 1.5, Qt.SolidLine, Qt.RoundCap, Qt.RoundJoin))
@@ -176,7 +183,7 @@ class QualityChart(Widget):
         self.draw_square(painter, current)
         painter.draw_text_right(current, '{}-45mm'.format(self.method), margin=12)
 
-        current = left_top + SizeF(80, 10)
+        current = left_top + SizeF(left_width + 5 + 7, 10)
         painter.setPen(Pen(QBrush(Qt.black), 1.5, Qt.DotLine, Qt.RoundCap, Qt.RoundJoin))
         painter.drawLine(current - SizeF(7, 0), current + SizeF(7, 0))
         self.draw_circle(painter, current)

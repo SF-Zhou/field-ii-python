@@ -2,15 +2,11 @@ import math
 import typing
 import numpy as np
 from quive import *
+from language import *
 
 r = 3
-chinese = False
 max_width = 400
 max_height = 350
-
-
-def language(chinese_str, english_str):
-    return chinese_str if chinese else english_str
 
 
 class LineChart(Widget):

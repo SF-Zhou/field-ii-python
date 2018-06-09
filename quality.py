@@ -2,6 +2,7 @@ import os
 import sys
 import json
 import widgets
+from language import *
 
 configs = []
 show = True
@@ -63,9 +64,9 @@ for device_name, value in results.items():
     w.add_line(label, nums, shape, is_dash)
 
 if 'contrast' in configs[0]:
-    w.label_y = '对比度'
+    w.label_y = language('对比度', 'Contrast')
 else:
-    w.label_y = '半峰全宽 / mm'
+    w.label_y = language('半峰全宽 / mm', 'FWHM (mm)')
 w.process()
 
 w.export_to_image(output_filename)
