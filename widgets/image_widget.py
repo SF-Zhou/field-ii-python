@@ -1,6 +1,7 @@
 import image
 import numpy as np
 from quive import *
+from language import *
 
 
 class ImageWidget(Widget):
@@ -38,13 +39,13 @@ class ImageWidget(Widget):
         self.u_image = u_image
 
     def paint(self, painter: Painter):
-        font_size = 47
-        painter.setFont(QFont('Simsun', font_size))
+        font_size = language(47, 32)
+        painter.setFont(QFont(language('Simsun', 'Times New Roman'), font_size))
         if self.u_image is None:
             return
 
         w, h = self.size
-        text_size = (90 * font_size // 40, 45 * font_size // 40)
+        text_size = (95 * font_size // 40, 45 * font_size // 40)
         text_width, text_height = text_size
         image_width, image_height = self.u_image.size
 
@@ -60,7 +61,7 @@ class ImageWidget(Widget):
         painter.save()
         painter.translate(0, h)
         painter.rotate(-90)
-        painter.drawText(QRect(0, 0, h, text_height), Qt.AlignCenter, '深度 / mm')
+        painter.drawText(QRect(0, 0, h, text_height), Qt.AlignCenter, language('深度 / mm', 'Axial distance (mm)'))
         painter.restore()
         w -= text_width
         h -= text_height * 2
@@ -75,7 +76,7 @@ class ImageWidget(Widget):
                                      margin=5, background_color=Qt.transparent)
 
             if x == 0:
-                painter.draw_text_bottom(PointF(w * percent, h), "宽度 / mm",
+                painter.draw_text_bottom(PointF(w * percent, h), language("宽度 / mm", "Lateral distance (mm)"),
                                          margin=8 + text_height, background_color=Qt.transparent)
             else:
                 percent = 1 - percent
