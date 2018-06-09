@@ -1,6 +1,7 @@
 import image
 import numpy as np
 from quive import *
+from language import *
 
 
 class SimulateWidget(Widget):
@@ -16,6 +17,9 @@ class SimulateWidget(Widget):
 
         self.need_show = True
         self.path = ''
+        self.depth = 25
+        self.is_lateral = True
+        self.is_fetus = False
 
         self.setMinimumSize(QSize(677, 717))
 
@@ -34,19 +38,25 @@ class SimulateWidget(Widget):
         self.qim.scaled(w * 2, h * 2)
         self.qim.setColorTable(self.gray_color_table)
 
+        if self.is_fetus:
+            self.qim = QImage('configs/4.fetus/fetus.bmp')
+
         self.update()
 
     def update_u_image(self, u_image: image.UImage):
         self.u_image = u_image
 
     def paint(self, painter: Painter):
-        font_size = 32
-        painter.setFont(QFont('Simsun', font_size))
+        font_size = language(32, 22)
+        if self.is_fetus:
+            font_size = language(47, 32)
+
+        painter.setFont(QFont(language('SimSun', 'Times New Roman'), font_size))
         if self.u_image is None:
             return
 
         w, h = self.size
-        text_size = (90 * font_size // 40, 45 * font_size // 40)
+        text_size = (95 * font_size // 40, 45 * font_size // 40)
         text_width, text_height = text_size
         image_width, image_height = self.u_image.size
 
@@ -62,7 +72,7 @@ class SimulateWidget(Widget):
         painter.save()
         painter.translate(0, h)
         painter.rotate(-90)
-        painter.drawText(QRect(0, 0, h, text_height), Qt.AlignCenter, '深度 / mm')
+        painter.drawText(QRect(0, 0, h, text_height), Qt.AlignCenter, language('深度 / mm', 'Axial distance (mm)'))
         painter.restore()
         w -= text_width
         h -= text_height * 2
@@ -77,7 +87,7 @@ class SimulateWidget(Widget):
                                      margin=5, background_color=Qt.transparent)
 
             if x == 0:
-                painter.draw_text_bottom(PointF(w * percent, h), "宽度 / mm",
+                painter.draw_text_bottom(PointF(w * percent, h), language("宽度 / mm", "Lateral distance (mm)"),
                                          margin=8 + text_height, background_color=Qt.transparent)
             else:
                 percent = 1 - percent
@@ -98,9 +108,11 @@ class SimulateWidget(Widget):
         painter.drawLine(PointF(0, h), PointF(w-1, h))
         painter.drawLine(PointF(w-1, 0), PointF(w-1, h))
 
-        # painter.drawImage(QRect(0, 0, w, h), self.qim)
+        if self.is_fetus:
+            painter.drawImage(QRect(0, 0, w, h), self.qim)
+            return
 
-        vertical_percent = (25 - 15) / image_height
+        vertical_percent = (self.depth - 15) / image_height
         vertical_pos = vertical_percent * h
         horizontal_pos = 0.5 * w
 
@@ -111,6 +123,10 @@ class SimulateWidget(Widget):
 
         painter.setBrush(QBrush(Qt.black))
         painter.setPen(Pen(QBrush(Qt.black), 3.0, Qt.SolidLine, Qt.RoundCap, Qt.RoundJoin))
+
+        if self.is_lateral:
+            painter.drawEllipse(QPointF(horizontal_pos, vertical_pos), 5, 5)
+            return
         painter.drawEllipse(QPointF(horizontal_pos, vertical_pos), r, r)
 
         current = PointF(horizontal_pos, vertical_pos) + PointF(r * 1.05, 0)

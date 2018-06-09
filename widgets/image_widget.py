@@ -33,6 +33,9 @@ class ImageWidget(Widget):
         self.qim.scaled(w * 2, h * 2)
         self.qim.setColorTable(self.gray_color_table)
 
+        print(u_image.size)
+        print(u_image.z_start)
+
         self.update()
 
     def update_u_image(self, u_image: image.UImage):
