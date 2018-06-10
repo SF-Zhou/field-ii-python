@@ -20,11 +20,11 @@ def main():
         (45, False, '/t/quality/original_contrast_45mm.pdf'),
     ]
 
-    # for depth, is_lateral, file_path in needs:
-    #     w.depth = depth
-    #     w.is_lateral = is_lateral
-    #     w.update()
-    #     w.export_to_pdf(file_path)
+    for depth, is_lateral, file_path in needs:
+        w.depth = depth
+        w.is_lateral = is_lateral
+        w.update()
+        w.export_to_pdf(file_path)
 
     w.is_fetus = True
     w.u_image = image.UImage(np.zeros((128, 1024)), (78.0288, 55.0), 20.0)

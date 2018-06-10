@@ -47,7 +47,7 @@ class SimulateWidget(Widget):
         self.u_image = u_image
 
     def paint(self, painter: Painter):
-        font_size = language(32, 22)
+        font_size = language(32, 44)
         if self.is_fetus:
             font_size = language(47, 32)
 

@@ -33,9 +33,6 @@ class ImageWidget(Widget):
         self.qim.scaled(w * 2, h * 2)
         self.qim.setColorTable(self.gray_color_table)
 
-        print(u_image.size)
-        print(u_image.z_start)
-
         self.update()
 
     def update_u_image(self, u_image: image.UImage):
@@ -43,7 +40,7 @@ class ImageWidget(Widget):
 
     def paint(self, painter: Painter):
         font_size = language(47, 32)
-        painter.setFont(QFont(language('Simsun', 'Times New Roman'), font_size))
+        painter.setFont(QFont(language('SimSun', 'Times New Roman'), font_size))
         if self.u_image is None:
             return
 
