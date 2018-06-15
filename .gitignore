@@ -4,6 +4,7 @@
 data
 /device.json
 *.MacBookPro.res.json
+figure
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

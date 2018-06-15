@@ -1,0 +1,18 @@
+image: python:3.6
+
+build:
+  script:
+    - export DEBIAN_FRONTEND=noninteractive
+    - apt update
+    - apt -q -y install libgl1-mesa-glx xvfb
+    - export DISPLAY=:99
+    - Xvfb :99 -noreset -ac &
+    - sleep 3
+    - pip3 install -r requirements.txt
+    - ./2_performance_figures.sh
+    - ./3_fetus_images.sh
+    - ./4_quality_figures.sh
+    - python3 original.py
+  artifacts:
+    paths:
+      - figure/

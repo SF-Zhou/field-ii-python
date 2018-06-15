@@ -5,19 +5,19 @@ from widgets import SimulateWidget
 
 
 def main():
-    p = pathlib.Path('/t/quality')
+    p = pathlib.Path('figure/quality')
     p.mkdir(exist_ok=True)
-    p = pathlib.Path('/t/fetus')
+    p = pathlib.Path('figure/fetus')
     p.mkdir(exist_ok=True)
 
     w = SimulateWidget()
     w.u_image = image.UImage(np.zeros((128, 1024)), (39.0144, 40.0), 15)
 
     needs = [
-        (25, True, '/t/quality/original_lateral_25mm.pdf'),
-        (45, True, '/t/quality/original_lateral_45mm.pdf'),
-        (25, False, '/t/quality/original_contrast_25mm.pdf'),
-        (45, False, '/t/quality/original_contrast_45mm.pdf'),
+        (25, True, 'figure/quality/original_lateral_25mm.pdf'),
+        (45, True, 'figure/quality/original_lateral_45mm.pdf'),
+        (25, False, 'figure/quality/original_contrast_25mm.pdf'),
+        (45, False, 'figure/quality/original_contrast_45mm.pdf'),
     ]
 
     for depth, is_lateral, file_path in needs:
@@ -30,7 +30,7 @@ def main():
     w.u_image = image.UImage(np.zeros((128, 1024)), (78.0288, 55.0), 20.0)
     w.resize(1000, 717)
     w.update()
-    w.export_to_pdf('/t/fetus/original_fetus.pdf')
+    w.export_to_pdf('figure/fetus/original_fetus.pdf')
 
 
 if __name__ == '__main__':
