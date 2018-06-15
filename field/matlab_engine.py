@@ -1,5 +1,8 @@
 import numpy as np
-import matlab.engine
+try:
+    import matlab.engine
+except ImportError:
+    pass
 
 
 def n_array(cell_array):

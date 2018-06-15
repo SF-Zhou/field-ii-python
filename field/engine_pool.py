@@ -1,4 +1,7 @@
-import matlab.engine
+try:
+    import matlab.engine
+except ImportError:
+    pass
 from . import MatlabEngine
 
 
