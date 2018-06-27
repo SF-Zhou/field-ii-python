@@ -5,4 +5,4 @@ scipy
 pillow
 pytest
 cython
-colored
+colored==1.3.5
