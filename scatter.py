@@ -51,10 +51,10 @@ add_result(rsa_fpga, rsa_res, 'rsa_fpga')
 
 w = widgets.ScatterChart()
 w.add_points(final_result)
-w.label_y = '半峰全宽 / mm'
+w.label_y = 'FWHM / mm'
 w.vertical_threshold = 1.0
 w.process()
-w.export_to_pdf('/t/scatter_res.pdf')
+w.export_to_pdf('figure/scatter_res.pdf')
 
 
 final_result = []
@@ -70,8 +70,8 @@ add_result(rsa_fpga, rsa_con, 'rsa_fpga')
 
 w = widgets.ScatterChart()
 w.add_points(final_result)
-w.label_y = '对比度'
+w.label_y = 'Contrast'
 w.vertical_threshold = 0.80
 w.vertical_like = 1
 w.process()
-w.export_to_pdf('/t/scatter_con.pdf')
+w.export_to_pdf('figure/scatter_con.pdf')
