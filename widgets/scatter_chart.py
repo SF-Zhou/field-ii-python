@@ -88,10 +88,13 @@ class ScatterChart(Widget):
         y_min = math.floor(self.minimum / step - 0.5) * step
         y_max = math.ceil(self.maximum / step + 0.5) * step
 
+        margin = 5
+        legend_height = 30
+
         horizontal_min = text_height + text_width
         horizontal_max = w - text_width / 2
         vertical_min = h - text_height * 2
-        vertical_max = text_height
+        vertical_max = text_height + legend_height + margin * 3
 
         # draw text on axis #
         horizontal_labels = list(map(str, self.x_value))
@@ -174,13 +177,13 @@ class ScatterChart(Widget):
 
             self.draw_label(painter, current_point, label)
 
-        left_top = PointF(horizontal_max, vertical_max) + SizeF(-80, 5)
+        left_top = PointF(horizontal_min, margin)
 
         painter.setBrush(Qt.white)
         painter.setPen(Pen(Qt.black, 1.0, Qt.SolidLine, Qt.RoundCap, Qt.RoundJoin))
-        painter.drawRect(QRectF(left_top, SizeF(75, 185)))
+        painter.drawRect(QRectF(left_top, SizeF(horizontal_max - horizontal_min, 50)))
 
-        current = left_top + SizeF(10, 10) - SizeF(0, 15)
+        current = left_top + SizeF(10, 10)
         labels = [
             'DAS-CPU', 'RDAS-CPU',
             'DAS-ARM', 'RDAS-ARM',
@@ -190,10 +193,13 @@ class ScatterChart(Widget):
             'SA-FPGA', 'RSA-FPGA',
         ]
 
-        for label in labels:
-            current = current + SizeF(0, 15)
+        for idx, label in enumerate(labels):
             self.draw_label(painter, current, label)
             painter.draw_text_right(current, label, margin=12)
+
+            current = current + SizeF(110, 0)
+            if (idx + 1) % 4 == 0:
+                current = current + SizeF(-110 * 4, 15)
 
         painter.end()
 
